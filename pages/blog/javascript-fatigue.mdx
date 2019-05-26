@@ -1,0 +1,122 @@
+import { Layout } from "../../components/Layout";
+
+export default Layout;
+
+# Javascript Fatigue
+
+A few days ago, I met up with a friend & peer over coffee.
+
+> Saul: “How’s it going?”
+> Me: “Fatigued.”
+> Saul: “Family?”
+> Me: “No, Javascript.”
+
+More accurately, I meant _React_ and the Javascript ecosystem that comes with it.
+
+---
+
+For starters, consider that [Pete Hunt](https://medium.com/u/3b799f227b58) asked why React is overwhelming for beginners:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Too many newbies getting overwhelmed by react&#39;s learning curve. Why?</p>&mdash; Pete Hunt (@floydophone) <a href="https://twitter.com/floydophone/status/680226147213426688?ref_src=twsrc%5Etfw">December 25, 2015</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+
+If you use React, you probably share the same experiences with [Vjeux](https://medium.com/u/46fa99d9bca4):
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/dan_abramov?ref_src=twsrc%5Etfw">@dan_abramov</a> <a href="https://twitter.com/floydophone?ref_src=twsrc%5Etfw">@floydophone</a> this is killing me that setting up a js project is so damn hard. Took me an entire evening last time</p>&mdash; vjeux ✪ (@Vjeux) <a href="https://twitter.com/Vjeux/status/680236138171244544?ref_src=twsrc%5Etfw">December 25, 2015</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+
+### There is a major problem in the React community that cripples beginners and hinders experts alike.
+
+#### Too Many Tools.
+
+At work this past quarter, we **painstakingly** started three new projects at work. I say “painstakingly” because _every_ project required decisions to be made around tooling depending on the scope & needs.
+
+Ultimately, the problem is that **by choosing React (and inherently JSX), you’ve unwittingly opted into a confusing nest of build tools, boilerplate, linters, & time-sinks to deal with before you ever get to _create_ anything.**
+
+#### Boilerplates & Generators Are Not The Answer.
+
+![](https://cdn-images-1.medium.com/max/1800/1*H4Y_NLqni0G4L5oL-hPmqw.png)
+
+[Yeoman](http://yeoman.io/) & [Plop](https://github.com/amwmedia/plop) can alleviate the amount of copy & pasting you do between projects.
+
+However, generated is *never *a one-to-one match, nor can it be.
+
+At scale with enough projects, it is exceedingly difficult to back-port features & improvements from one application to the rest, since **the common code is not abstracted into an independently updatable dependency.**
+
+### When a generator is good solution for repetitious code, a better solution is to abstract it into a simpler API.
+
+Otherwise, the generator becomes a confusing, logic-riddled application itself due to permutations of possible use-cases, forever in a race to stay relevant with the applications it created.
+
+I’ve experienced this first-hand with several generators, including my own [evolution/wordpress](https://github.com/evolution/wordpress).
+
+#### Too Many APIs. Too Much Configuration.
+
+![](https://cdn-images-1.medium.com/max/2652/1*I7CseoZiupct37LZzWINEg.png)
+
+An example of this can be seen in [Mark Dalgleish](https://medium.com/u/d7225e72eea)’s excellent [react-fetcher](https://github.com/markdalgleish/react-fetcher#example-usage-with-react-router-and-redux), libraries such as [Redux](https://github.com/rackt/redux), [React Router](https://github.com/rackt/react-router), [Webpack](http://webpack.github.io/), and the React ecosystem have, largely, opted for discrete modularization at the cost of terse APIs by **offloading their architectural underpinnings to the user and, as a result, worsen the developer experience in aggregate.**
+
+Alone, the APIs are small, but even less than a handful yield a nearly incomprehensible mess of code to each new set of eyes.
+
+Even if contained in a “boilerplate” project, scaffolded by a generator, or tucked away in a _finalCreateStorev3SeriousThisTime.js_ file, we’ve created a rat’s nest of wiring that would make WordPress plugins blush.
+
+#### More Abstractions. Less Code.
+
+Of course, these APIs are a requirement for having smaller, decoupled, testable, and therefore, _high-quality_ libraries.
+
+However, we **need an abstract middle-ground between wiring dependencies and generating boilerplates*.***
+
+### Abstractions are necessary to reduce the cognitive load of how things work so you can focus on creating.
+
+#### Fight Against Lines of Code.
+
+Any significantly-scoped project will already have a substantial amount of code behind it.
+
+### Application developers should not have to become experts in the underpinnings of the library just to use it.
+
+Therefore, instrumenting tooling should aim to be _as minimal as possible_.
+
+Consider this **hastily-compiled list of alternatives**:
+
+- Provide an opinionated, _author-endorsed_ wrapper API or library for the theoretical 90% of use-cases.
+  _(Cutting the boilerplate for React + Router + Redux alone would be a **huge** improvement for many.)_
+
+- Publish use-case _presets_ akin to Babel’s (e.g. [_es2015_](https://www.npmjs.com/package/babel-preset-es2015),_ [react](https://www.npmjs.com/package/babel-preset-react)_, etc.) presets.
+
+- Leverage folder & file-naming conventions for automatically discovering application-specific routes, actions, tests, and more.
+  _(This is already common-place for testing (e.g. [Mocha](http://mochajs.org/)) & serving public assets, but somehow every project magically requires a unicorn-configuration.)_
+
+- Community-driven Rapid Application Development (RAD) tooling to significantly delay the need for explicit configuration until scope is solidified.
+
+Until a large part of the ecosystem adopts terse APIs, conventions, and strives for significantly reducing implementation details for end-users, abstract tooling may be our only outlet.
+
+#### RAD Tooling
+
+Following the Twitter threads above, many rightfully concede that there is no one-size-fits-all solution.
+
+### However, if we start with the intent to just build a prototype, the underlying abstractions don’t matter.
+
+Related, [Vjeux](https://medium.com/u/46fa99d9bca4) [challenged the community to devise tooling for quick prototyping](http://blog.vjeux.com/2015/javascript/challenge-best-javascript-setup-for-quick-prototyping.html), even at the cost of customization.
+
+In the meantime, I’m aware of a few options you can use **today** to jumpstart your next project:
+
+- [budō](https://github.com/mattdesl/budo)
+
+- [nwb](https://github.com/insin/nwb)
+
+- [prot](https://github.com/mattdesl/prot)
+
+- [rackt-cli](https://github.com/mzabriskie/rackt-cli)
+
+- [rwb](https://github.com/petehunt/rwb)
+
+---
+
+The Javascript pendulum has swung from restrictive, monolithic frameworks to modular, boilerplate-hindered libraries.
+
+Soon enough, I’m confident it will settle in the middle between rapid development and customization.
+
+In fact, a friend of mine senses the same pattern emerging:
+
+> 2016 will likely involve a serious, focused conjoining of projects, tools, and language features to merge the best and brightest packages/tools/boilerplates into more formalized projects. — [Matt Keas](https://medium.com/u/c3b0eb0d2398) in [State of the Union.js](https://medium.com/@matthiasak/state-of-the-union-js-d664bdbffd14#---0-187.wwfrbc5v4)
+
+**Here’s to an exciting 2016! :)**
