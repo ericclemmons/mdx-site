@@ -9,7 +9,19 @@ export const Layout = ({ children }) => (
       />
       <style>
         {`
-          body { height: 100vh; min-height: 100vh; }
+          * {
+            transition: all 200ms ease-in-out;
+          }
+
+          body {
+            height: 100vh;
+            min-height: 100vh;
+          }
+
+          twitter-widget {
+            margin-left: auto;
+            margin-right: auto;
+          }
         `}
       </style>
     </Head>
@@ -37,9 +49,7 @@ export const Layout = ({ children }) => (
       />
       <div
         className="flex"
-        style={{
-          gridArea: "1 / content-start / -1 / content-end"
-        }}
+        style={{ gridArea: "1 / content-start / -1 / content-end" }}
       >
         <div className="w-64 bg-purple-600 text-gray-100">
           <nav className="sticky overflow-y-auto h-screen top-0">
