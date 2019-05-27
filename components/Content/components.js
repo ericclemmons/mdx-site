@@ -8,7 +8,11 @@ export const components = {
     );
 
     if (href) {
-      return <Link href={href}>{link}</Link>;
+      return (
+        <Link href={href} prefetch>
+          {link}
+        </Link>
+      );
     }
 
     return link;

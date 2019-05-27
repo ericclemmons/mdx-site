@@ -7,12 +7,7 @@ export const components = {
   ...contentComponents,
 
   a(props) {
-    const { className, href } = props;
-
-    if (className === "social-icon") {
-      return <a className="social-icon h-16" {...props} />;
-    }
-
+    const { href } = props;
     const link = (
       <a
         class="cursor-pointer font-semibold text-yellow-400 hover:text-yellow-200"
@@ -21,7 +16,11 @@ export const components = {
     );
 
     if (href) {
-      return <Link href={href}>{link}</Link>;
+      return (
+        <Link href={href} prefetch>
+          {link}
+        </Link>
+      );
     }
 
     return link;
