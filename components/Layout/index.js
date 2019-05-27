@@ -13,7 +13,7 @@ export const Layout = ({ children }) => (
       <style>
         {`
           * {
-            transition: color 200ms ease-in-out;
+            transition: all 200ms ease-in-out;
           }
 
           body {
