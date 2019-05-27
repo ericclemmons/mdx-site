@@ -1203,6 +1203,11 @@ babel-plugin-dynamic-import-node@2.2.0:
   dependencies:
     object.assign "^4.1.0"
 
+babel-plugin-react-html-attrs@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-html-attrs/-/babel-plugin-react-html-attrs-2.1.0.tgz#ec92006bca1d07e07d27823afae86dac33fabad5"
+  integrity sha512-UAXnfrH9c/V0D6efhJ41emUb0tOM83xFS1xGu7lQdFT/jBZ+3moK3pk/O3MfAmljEUt47nYUea77DduOXAMWWg==
+
 babel-plugin-react-require@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.0.tgz#2e4e7b4496b93a654a1c80042276de4e4eeb20e3"
