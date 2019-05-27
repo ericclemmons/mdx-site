@@ -62,17 +62,19 @@ export const Layout = ({ children }) => (
         >
           <nav className="sticky overflow-x-hidden overflow-y-auto h-screen top-0">
             <div className="p-8 pl-0">
-              <About />
+              <Navigation />
             </div>
           </nav>
         </div>
 
-        <main
+        <div
           className="bg-gray-100 flex-1"
           style={{ boxShadow: "-3px 0 4px rgba(0, 0, 0, 0.12)" }}
         >
-          <div className="p-8">{children}</div>
-        </main>
+          <main className="p-8">
+            <Content>{children}</Content>
+          </main>
+        </div>
       </div>
     </div>
   </div>
