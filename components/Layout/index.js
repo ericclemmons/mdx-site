@@ -1,4 +1,7 @@
 import Head from "next/head";
+import Link from "next/link";
+
+import About from "./about.mdx";
 
 export const Layout = ({ children }) => (
   <div className="antialiased bg-gray-100 font-serif">
@@ -10,7 +13,7 @@ export const Layout = ({ children }) => (
       <style>
         {`
           * {
-            transition: all 200ms ease-in-out;
+            transition: color 200ms ease-in-out;
           }
 
           body {
@@ -51,13 +54,15 @@ export const Layout = ({ children }) => (
         className="flex"
         style={{ gridArea: "1 / content-start / -1 / content-end" }}
       >
-        <div className="w-64 bg-purple-600 text-gray-100">
-          <nav className="sticky overflow-y-auto h-screen top-0">
-            <div className="p-8">
-              <img
-                className="rounded-full w-full border-4 shadow-md mb-4"
-                src="https://github.com/ericclemmons.png"
-              />
+        <div
+          className="w-64 bg-purple-600 text-white"
+          style={{
+            textShadow: "0 1px 1px rgba(0, 0, 0, 0.25)"
+          }}
+        >
+          <nav className="sticky overflow-x-hidden overflow-y-auto h-screen top-0">
+            <div className="p-8 pl-0">
+              <About />
             </div>
           </nav>
         </div>

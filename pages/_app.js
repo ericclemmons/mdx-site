@@ -1,10 +1,22 @@
-import React from "react";
 import { MDXProvider } from "@mdx-js/react";
 import App, { Container } from "next/app";
+import Link from "next/link";
+import React from "react";
+
+import { Layout } from "../components/Layout";
 
 const components = {
   a(props) {
-    return <a className="text-purple-600 hover:text-purple-900" {...props} />;
+    const { href } = props;
+    const link = (
+      <a className="text-purple-600 hover:text-purple-900" {...props} />
+    );
+
+    if (href) {
+      return <Link href={href}>{link}</Link>;
+    }
+
+    return link;
   },
 
   blockquote(props) {
@@ -35,6 +47,15 @@ const components = {
 
   h4(props) {
     return <h4 class="font-semibold mt-8 text-2xl" {...props} />;
+  },
+
+  h5(props) {
+    return (
+      <h4
+        class="bg-purple-500 mt-8 text-lg border-l-4 font-semibold pl-4 py-1 mb-3 shadow-md sticky top-0 w-screen"
+        {...props}
+      />
+    );
   },
 
   hr(props) {
@@ -74,7 +95,9 @@ export default class MyApp extends App {
     return (
       <Container>
         <MDXProvider components={components}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </MDXProvider>
       </Container>
     );
