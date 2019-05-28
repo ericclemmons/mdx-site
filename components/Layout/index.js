@@ -19,6 +19,11 @@ export const Layout = props => (
             background-attachment: fixed;
             background-size: cover;
           }
+
+          twitter-widget {
+            margin-left: auto;
+            margin-right: auto;
+          }
         `}
       </style>
     </Head>
