@@ -5,7 +5,7 @@ import { SocialIcon } from "react-social-icons";
   <a>
     <img
       alt="Picture of Eric Celmmons"
-      class="rounded-full border-4 shadow-md mb-4 w-56 h-56"
+      class="rounded-full border-4 shadow-md mb-4 w-56 h-56 mx-auto"
       src="https://github.com/ericclemmons.png"
     />
   </a>
@@ -18,38 +18,42 @@ Hi, I'm **Eric Clemmons**.
 I specialize in building **remote teams** developing **full-stack applications**
 with technologies such as TypeScript, React, & GraphQL that enable metrics-driven **experimentation**.
 
-<p>
-  <button class="rounded-full shadow hover:shadow-md text-black mr-2 border-2 border-white hover:border-yellow-200">
+<p class="flex justify-around mt-4 font-sans text-gray-700">
+  <button class="bg-white rounded-full shadow hover:shadow-md border-2 border-white hover:border-yellow-200">
     <SocialIcon
       bgColor="#44337a"
       fgColor="white"
       style={{ width: "2rem", height: "2rem" }}
       url="mailto:eric@clemmons.family?subject=I was on your website..."
     />
+    <label class="hidden sm:inline md:hidden px-2">eric@clemmons.family</label>
   </button>
 
-<button class="rounded-full shadow hover:shadow-md text-black mr-2 border-2 border-white hover:border-yellow-200">
+<button class="bg-white rounded-full shadow hover:shadow-md border-2 border-white hover:border-yellow-200">
+  <SocialIcon
+    fgColor="white"
+    style={{ width: "2rem", height: "2rem" }}
+    url="https://twitter.com/ericclemmons"
+  />
+  <label class="hidden sm:inline md:hidden px-2">@ericclemmons</label>
+</button>
+
+<button class="bg-white rounded-full shadow hover:shadow-md border-2 border-white hover:border-yellow-200">
   <SocialIcon
     bgColor="black"
     fgColor="white"
     style={{ width: "2rem", height: "2rem" }}
     url="https://github.com/ericclemmons"
   />
+  <label class="hidden px-2">ericclemmons</label>
 </button>
 
-<button class="rounded-full shadow hover:shadow-md text-black mr-2 border-2 border-white hover:border-yellow-200">
-  <SocialIcon
-    fgColor="white"
-    style={{ width: "2rem", height: "2rem" }}
-    url="https://twitter.com/ericclemmons"
-  />
-</button>
-
-  <button class="rounded-full shadow hover:shadow-md text-black mr-2 border-2 border-white hover:border-yellow-200">
+  <button class="bg-white rounded-full shadow hover:shadow-md border-2 border-white hover:border-yellow-200">
     <SocialIcon
       fgColor="white"
       url="https://linkedin.com/in/ericclemmons"
       style={{ width: "2rem", height: "2rem" }}
     />
+    <label class="hidden px-2">ericclemmons</label>
   </button>
 </p>

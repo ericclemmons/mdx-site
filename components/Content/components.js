@@ -21,7 +21,11 @@ export const components = {
   blockquote(props) {
     return (
       <blockquote
-        class="bg-white border-l-4 border-purple-600 italic pl-6 my-4 whitespace-pre-line"
+        class="border-l-4 border-purple-600 italic pl-6 my-4 whitespace-pre-line"
+        style={{
+          background:
+            "linear-gradient(to right, white 85%, rgba(255, 255, 255, 0))"
+        }}
         {...props}
       />
     );
@@ -32,7 +36,31 @@ export const components = {
   },
 
   h1(props) {
-    return <h1 class="mb-8 text-5xl" {...props} />;
+    return (
+      <h1
+        class="border-b -ml-8 pl-8 mb-8 text-5xl tracking-wide"
+        style={{
+          background:
+            "linear-gradient(to right, white 85%, rgba(255, 255, 255, 0))",
+          textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)"
+        }}
+        {...props}
+      />
+    );
+  },
+
+  h2(props) {
+    return (
+      <h2
+        class="border-b -ml-8 pl-8 text-4xl tracking-wide my-8"
+        style={{
+          background:
+            "linear-gradient(to right, white 85%, rgba(255, 255, 255, 0))",
+          textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)"
+        }}
+        {...props}
+      />
+    );
   },
 
   h3(props) {
