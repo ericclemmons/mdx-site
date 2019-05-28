@@ -31,8 +31,13 @@ export const components = {
     );
   },
 
-  code(props) {
-    return <code class="font-mono bg-white border shadow-sm" {...props} />;
+  inlineCode(props) {
+    return (
+      <code
+        class="p-1 rounded border-b-2 font-mono bg-white border shadow-sm"
+        {...props}
+      />
+    );
   },
 
   h1(props) {
