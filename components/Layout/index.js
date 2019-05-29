@@ -46,7 +46,7 @@ export const Layout = props => (
       </div>
 
       <main
-        class="bg-gray-100 flex-1 p-8"
+        class="bg-gray-100 flex-1 p-8 pt-0 min-h-screen"
         style={{ boxShadow: "-3px 0 4px rgba(0, 0, 0, 0.12)" }}
       >
         <Content {...props} />
