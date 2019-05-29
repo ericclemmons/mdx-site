@@ -1,5 +1,5 @@
-const withMDX = require("@next/mdx")();
+const withMdxFm = require("next-mdx-frontmatter")();
 
-module.exports = withMDX({
+module.exports = withMdxFm({
   pageExtensions: ["js", "mdx"]
 });
