@@ -18,6 +18,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
+    "@mdx-js/runtime": "^1.0.20",
     "micro": "^9.3.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
