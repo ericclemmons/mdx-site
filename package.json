@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@mdx-js/runtime": "^1.0.20",
+    "front-matter": "^3.0.2",
     "micro": "^9.3.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

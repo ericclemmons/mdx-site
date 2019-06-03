@@ -1,17 +1,19 @@
 // @ts-ignore
 import MDX from "@mdx-js/runtime";
 import { readFileSync } from "fs";
+import fm from "front-matter";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const mdx = readFileSync("./content/javascript-fatigue.mdx", "utf8");
+const { attributes, body } = fm(mdx);
 
 import { Layout } from "./components/Layout";
 
 export default async () => {
   const html = renderToStaticMarkup(
     <Layout>
-      <MDX>{mdx}</MDX>
+      <MDX>{body}</MDX>
     </Layout>
   );
 
