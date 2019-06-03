@@ -1,23 +1,12 @@
 import React from "react";
+// @ts-ignore
+import { SocialIcon } from "react-social-icons";
 
 const Link = (props: any) => <React.Fragment {...props} />;
 
 export const components = {
   a(props: any) {
-    const { href } = props;
-    const link = (
-      <a className="text-purple-600 hover:text-purple-900" {...props} />
-    );
-
-    if (href) {
-      return (
-        <Link href={href} prefetch>
-          {link}
-        </Link>
-      );
-    }
-
-    return link;
+    return <a className="text-purple-600 hover:text-purple-900" {...props} />;
   },
 
   blockquote(props: any) {
@@ -103,6 +92,8 @@ export const components = {
   p(props: any) {
     return <p className="text-lg py-2" {...props} />;
   },
+
+  SocialIcon,
 
   strong(props: any) {
     return <strong className="font-semibold" {...props} />;

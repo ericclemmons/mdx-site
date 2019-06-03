@@ -21,6 +21,7 @@
     "@mdx-js/runtime": "^1.0.20",
     "micro": "^9.3.4",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-social-icons": "^4.1.0"
   }
 }

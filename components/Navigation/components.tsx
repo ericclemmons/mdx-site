@@ -1,5 +1,4 @@
 import React from "react";
-
 import { components as contentComponents } from "../Content/components";
 
 const Link = (props: any) => <React.Fragment {...props} />;
@@ -8,23 +7,12 @@ export const components = {
   ...contentComponents,
 
   a(props: any) {
-    const { href } = props;
-    const link = (
+    return (
       <a
         className="cursor-pointer font-semibold text-yellow-400 hover:text-yellow-200"
         {...props}
       />
     );
-
-    if (href) {
-      return (
-        <Link href={href} prefetch>
-          {link}
-        </Link>
-      );
-    }
-
-    return link;
   },
 
   h5(props: any) {

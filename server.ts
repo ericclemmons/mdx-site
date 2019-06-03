@@ -14,5 +14,5 @@ if (module.hot) {
 micro((...args) => {
   return require("./app").default(...args);
 }).listen(3000, () => {
-  console.log(`🚀 Listening on http://localhost:3000/`);
+  console.log(`🚀  Listening on http://localhost:3000/`);
 });
