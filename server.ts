@@ -6,7 +6,9 @@ import micro from "micro";
 
 if (module.hot) {
   console.info("🔥  HMR Enabled");
-  module.hot.accept("./app");
+  module.hot.accept("./app", () => {
+    console.info("♻️  Reloaded");
+  });
 } else {
   console.info("💤  HMR Disabled");
 }
