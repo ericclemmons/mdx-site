@@ -6,6 +6,7 @@ import { router, get } from "microrouter";
 import serve from "serve-handler";
 
 import fs from "fs";
+import { ServerResponse } from "http";
 import { promisify } from "util";
 import fm from "front-matter";
 import path from "path";
@@ -13,7 +14,6 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { Layout } from "./components/Layout";
-import { ServerResponse } from "http";
 
 const readFile = promisify(fs.readFile);
 const exists = promisify(fs.exists);
