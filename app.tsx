@@ -2,6 +2,8 @@
 import MDX from "@mdx-js/runtime";
 import { send } from "micro";
 import { router, get } from "microrouter";
+// @ts-ignore
+import serve from "serve-handler";
 
 import fs from "fs";
 import { promisify } from "util";
@@ -11,6 +13,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { Layout } from "./components/Layout";
+import { ServerResponse } from "http";
 
 const readFile = promisify(fs.readFile);
 const exists = promisify(fs.exists);
@@ -63,5 +66,34 @@ export default router(
     `;
   }),
 
-  get("/*", (req, res) => send(res, 404, "Not Found"))
+  get("/*", async (req, res) => {
+    await serve(
+      req,
+      res,
+      {
+        directoryListing: false,
+        public: "public",
+        renderSingle: true
+      },
+      {
+        sendError(
+          absolutePath: string,
+          response: ServerResponse,
+          acceptsJSON: boolean,
+          root: string,
+          handlers: any,
+          config: any,
+          error: {
+            statusCode: number;
+            code: string;
+            message: string;
+          }
+        ) {
+          const { statusCode, message } = error;
+
+          send(res, statusCode, message);
+        }
+      }
+    );
+  })
 );
