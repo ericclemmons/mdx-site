@@ -7,12 +7,12 @@ import React from "react";
 
 import { components } from "./components";
 
-const mdx = readFileSync(`${__dirname}/../../content/about.mdx`, "utf8");
+export const Navigation = () => {
+  const mdx = readFileSync(`${__dirname}/../../content/about.mdx`, "utf8");
 
-const About = () => <MDX>{mdx}</MDX>;
-
-export const Navigation = () => (
-  <MDXProvider components={components}>
-    <About />
-  </MDXProvider>
-);
+  return (
+    <MDXProvider components={components}>
+      <MDX>{mdx}</MDX>
+    </MDXProvider>
+  );
+};
