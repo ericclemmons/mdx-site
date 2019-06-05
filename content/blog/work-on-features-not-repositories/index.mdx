@@ -1,0 +1,103 @@
+---
+firstPublishedAt: 1536002253993
+latestPublishedAt: 1536002253993
+slug: work-on-features-not-repositories
+title: Work on Features, Not Repositories
+---
+
+_Why organizational boundaries shouldn’t change where development happens._
+
+---
+
+Recently on Twitter, Kent C. Dodds asked:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Hey folks who have a decoupled client-server application (no server rendering, server is just an API server). Where is your client code and server code located?</p>&mdash; Kent C. Dodds (@kentcdodds) <a href="https://twitter.com/kentcdodds/status/1036022955849838592?ref_src=twsrc%5Etfw">September 1, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+It’s an interesting question, as we often have various reasons to split projects into multiple repositories. (e.g. _if I don’t share code between the client & server, then they should be separated, right?)_
+
+In my experience, **a repository should house all of the code necessary to make developing & shipping features relatively _frictionless._**
+
+#### Software is like Jello: poke it in one place, and another place jiggles.
+
+![Starbucks’ iOS App](https://cdn-images-1.medium.com/max/4096/1*PIKb1SOxOp0Tlt1QWasIEA.jpeg)
+
+# A Real-World Example
+
+[Starbucks’ Progressive Web App (PWA)](https://app.starbucks.com/) is basically a single-page React app managed within a single repository. The GraphQL API is in *another *repository*.*
+
+In practice, working on the UI that requires API changes means:
+
+1. Having to `npm link` our API to our PWA.
+
+1. Working on the UI changes until real data is needed, then…
+
+1. Working on the API changes, until the UI is working again.
+
+1. Pushing 2 pull-requests for approval.
+
+1. Once approved, bumping & releasing the API first.
+
+1. Finally, bumping & releasing the UI.
+
+There are a lot of places this process breaks down, especially on large teams with a lot of work in-progress.
+
+But the real problem is that the **repositories are splitting up features based on implementation.**
+
+Ideally, I’d like to see:
+
+1. Working on the UI & API *simultaneously.
+   (*In practice, this expedites discovery & turnaround!)
+
+1. Pushing a _single_ pull-request can be reviewed, approved, and tested.
+
+1. Once approved, the **UI & API is shipped as a single feature slice**.
+
+A single repository, properly structured, can deploy to multiple hosts, as separate NPM packages, or as a single monolithic app.
+
+#### **How code is shipped does not have to mirror how it is developed.**
+
+---
+
+# But We’ve Known This Already.
+
+Just Look At React Components
+
+When I first started working with React, it was normal for **separation of concerns** to mean **separation of _file types_**.
+
+```
+src/
+  components/
+    App.js
+    Button.js
+    ...
+  styles/
+    App.css
+    Button.css
+    ...
+```
+
+But overtime, possibly expedited thanks to CSS-in-JS, we began to encourage **natural coupling of technologies around features**.
+
+```
+src/
+  components/
+    App/
+      ...
+    Button/
+      ...
+```
+
+---
+
+If you want to touch the UI and it means the API has to change, that’s **perfectly natural**. Self-imposed splitting of code into repositories is a form of premature optimization.
+
+Instead, **make adding value _easy_.** And when it’s not easy, split up your code, change your tools, re-architect your app, or whatever.
+
+#### It’s much easier to blow something up than to piece it back together.
+
+---
+
+_For more content on co-locating files with their features, check out [Kent C. Dodds](https://medium.com/u/db72389e89d8)’ “[What code comments can teach us about scaling a codebase](https://blog.kentcdodds.com/what-code-comments-can-teach-us-about-scaling-a-codebase-90bbfad8d70d)”._
+
+_If you enjoyed this & would like more insights, [follow @ericclemmons on Twitter](https://twitter.com/ericclemmons) or [subscribe to my newsletter](https://tinyletter.com/ericclemmons)!_
