@@ -1,0 +1,39 @@
+---
+firstPublishedAt: 1539843240242
+latestPublishedAt: 1539843240242
+slug: graphql-context-services
+title: GraphQL Context & Services
+---
+
+Having used GraphQL for quite some time, two of my favorite patterns are:
+
+- `Context` as a `class`
+
+- Abstracting complexity into **Service APIs **via `context.services`
+
+[![sandbox](https://cdn-images-1.medium.com/max/4232/1*V1-Gltco1Ot3rSvGQq8Bgw.png)](https://codesandbox.io/s/github/ericclemmons/graphql-context-services?module=README.md)
+
+> *Note: *You can find the source code for the this screenshot & demo at:
+> [https://github.com/ericclemmons/graphql-context-services/](https://github.com/ericclemmons/graphql-context-services/)
+
+# Rationale
+
+- Using `Context` (instead of a plain `{…}` object) moves complexity from within your GraphQL middleware to a separate, testable layer.
+
+![](https://cdn-images-1.medium.com/max/2248/1*tIFRRnByssNA1TQsZUISIg.png)
+
+- `Context` can have a strict, testable API for your resolvers to use, instead of ad-hoc reliance on `req.query` or `req.body` .
+
+![This initialization pattern is compatible with Apollo’s Data Sources. Also, computed properties are readily testable without an E2E test.](https://cdn-images-1.medium.com/max/2648/1*vBNNfH3xukpih4b8GanoNg.png)
+
+- API calls within resolvers are simplified, as their only responsibility is to shepherd arguments from the query to the service layer.
+
+- You can leverage [Apollo’s `dataSources`](https://www.apollographql.com/docs/apollo-server/features/data-sources.html#Accessing-data-sources-from-resolvers), even with the standard `express-graphql` library!
+
+![`RESTDataSource` automatically caches based on HTTP response headers!](https://cdn-images-1.medium.com/max/2280/1*jZkinAdxquNZOvEZtHN_qg.png)
+
+# That’s it!
+
+If you haven’t already, [view & play with this example on CodeSandbox](https://codesandbox.io/s/github/ericclemmons/graphql-context-services?module=README.md).
+
+If you enjoyed this, give me a follow at [@ericclemmons on Twitter](https://twitter.com/ericclemmons)!
