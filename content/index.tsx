@@ -19,7 +19,13 @@ export const posts = async () => {
   const posts = mdxs.map((mdx, i) => {
     const href = files[i].replace(contentPath, "").replace("/index.mdx", "");
     const { attributes, body } = fm(mdx);
-    const snippet = body.slice(0, Math.min(300, body.indexOf("---"))).trim();
+
+    // Break at the first heading or line-break
+    const breaks = [body.indexOf("---"), body.indexOf("# ")].filter(
+      i => i !== -1
+    );
+
+    const snippet = body.slice(0, Math.min(300, ...breaks)).trim();
 
     return {
       ...attributes,
