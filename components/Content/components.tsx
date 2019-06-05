@@ -2,6 +2,8 @@ import React from "react";
 // @ts-ignore
 import { SocialIcon } from "react-social-icons";
 
+import { Card } from "./Card";
+
 const Link = (props: any) => <React.Fragment {...props} />;
 
 export const components = {
@@ -21,6 +23,8 @@ export const components = {
       />
     );
   },
+
+  Card,
 
   inlineCode(props: any) {
     return (

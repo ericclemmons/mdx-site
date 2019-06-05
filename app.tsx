@@ -6,33 +6,105 @@ import { router, get } from "microrouter";
 import serve from "serve-handler";
 
 import fs from "fs";
-import { ServerResponse } from "http";
+import { ServerResponse, IncomingMessage } from "http";
 import { promisify } from "util";
 import fm from "front-matter";
 import path from "path";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { Layout } from "./components/Layout";
+import { Layout as DefaultLayout } from "./components/Layout";
 
 const readFile = promisify(fs.readFile);
-const exists = promisify(fs.exists);
+
+const resolve = (...segments: any) => {
+  try {
+    return require.resolve(path.join(process.cwd(), ...segments));
+  } catch (error) {
+    return null;
+  }
+};
+
+const getMDX = async (folder: string) => {
+  const mdxPath = resolve("content", folder, "index.mdx");
+
+  if (!mdxPath) {
+    return;
+  }
+
+  return await readFile(mdxPath, "utf8");
+};
+
+const getExports = async (folder: string, req: IncomingMessage) => {
+  const exportsPath = resolve("content", folder);
+
+  if (!exportsPath) {
+    return {
+      default: DefaultLayout
+    };
+  }
+
+  const { default: Layout = DefaultLayout, ...exports } = await import(
+    exportsPath
+  );
+
+  const keys = Object.keys(exports);
+  const values = await Promise.all(
+    Object.entries(exports).map(([prop, value]) => {
+      // Return layout as-is
+      if (prop === "default") {
+        return value;
+      }
+
+      if (typeof value === "function") {
+        return value(req);
+      }
+
+      // Enforce all exports being functions, otherwise we won't be able
+      // to differentiate a Component from a resolver.
+      throw new Error(
+        `${exportsPath}'s ${JSON.stringify(prop)} should be a Function`
+      );
+    })
+  );
+
+  const scope = keys.reduce((acc, key, i) => {
+    return {
+      ...acc,
+      [key]: values[i]
+    };
+  }, {});
+
+  return { default: Layout, ...scope };
+};
 
 export default router(
   get("/(:folder)", async (req, res) => {
-    const { folder = "/" } = req.params;
-    const mdxPath = path.join(process.cwd(), "content", folder, "index.mdx");
+    const { ext } = path.parse(req.url as string);
 
-    if (!(await exists(mdxPath))) {
+    // Ignore potentially static files
+    if (ext) {
       return;
     }
 
-    const mdx = await readFile(mdxPath, "utf8");
+    const { folder = "/" } = req.params;
+    const [mdx, exports] = await Promise.all([
+      getMDX(folder),
+      getExports(folder, req)
+    ]);
+
+    // Ignore folders without markup
+    if (!mdx) {
+      return;
+    }
+
     const { attributes, body } = fm(mdx);
+    const { default: Layout = DefaultLayout, ...scope } = exports;
+    const { title } = attributes;
 
     const markup = renderToStaticMarkup(
       <Layout>
-        <MDX>{body}</MDX>
+        <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
       </Layout>
     );
 

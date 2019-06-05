@@ -26,10 +26,10 @@
 
 ## Blog
 
-- [JavaScript Fatigue](/blog/javascript-fatigue)
-
-  A few days ago, I met up with a friend & peer over coffee.
-
-  > Saul: “How’s it going?” Me: “Fatigued.” Saul: “Family?” Me: “No, Javascript.”
-
-  More accurately, I meant React and the Javascript ecosystem that comes with it.
+<section>
+  {posts.map(({ href, title, snippet }) => (
+    <Card cta="Read →" href={href} title={title}>
+      {snippet}
+    </Card>
+  ))}
+</section>
