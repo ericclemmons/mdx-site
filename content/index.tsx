@@ -25,7 +25,7 @@ export const posts = async () => {
       i => i !== -1
     );
 
-    const snippet = body.slice(0, Math.min(300, ...breaks)).trim();
+    const snippet = body.slice(0, Math.min(...breaks)).trim();
 
     return {
       ...attributes,
