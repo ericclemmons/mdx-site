@@ -1,32 +1,59 @@
 ## Open-Source Projects
 
-- [`polydev`](https://github.com/ericclemmons/polydev)
+<section className="flex flex-wrap -mx-2">
+  <Card
+    href="https://github.com/ericclemmons/polydev"
+    title={<code>polydev</code>}
+  >
+    Faster, route-centric development for Node.js apps with built-in Hot Module
+    Replacement.
+  </Card>
 
-  Faster, route-centric development for Node.js apps with built-in Hot Module Replacement.
+<Card
+  href="https://github.com/ericclemmons/node-recorder"
+  title={<code>node-recorder</code>}
+>
+  <p>
+    Simple recording & replaying of HTTP requests for predictable development &
+    testing.
+  </p>
+</Card>
 
-- [`node-recorder`](https://github.com/ericclemmons/node-recorder)
+<Card
+  href="https://github.com/ericclemmons/per-env"
+  title={<code>per-env</code>}
+>
+  <p>Clean up your package.json with per-NODE_ENV npm scripts.</p>
+</Card>
 
-  Simple recording & replaying of HTTP requests for predictable development & testing.
+<Card
+  href="https://github.com/ericclemmons/react-resolver"
+  title={<code>react-resolver</code>}
+>
+  <p>Async rendering & data-fetching for universal React applications.</p>
+</Card>
 
-- [`per-env`](https://github.com/ericclemmons/per-env)
+<Card
+  href="https://github.com/webpack-contrib/npm-install-webpack-plugin"
+  title={<code>npm-install-webpack-plugin</code>}
+>
+  <p>
+    Speed up development by automatically installing & saving dependencies with
+    Webpack.
+  </p>
+</Card>
 
-  Clean up your package.json with per-NODE_ENV npm scripts
-
-- [`react-resolver`](https://github.com/ericclemmons/react-resolver)
-
-  Async rendering & data-fetching for universal React applications.
-
-- [`npm-install-webpack-plugin`](https://github.com/webpack-contrib/npm-install-webpack-plugin)
-
-  Speed up development by automatically installing & saving dependencies with Webpack.
-
-- [`start-server-webpack-plugin`](https://github.com/ericclemmons/start-server-webpack-plugin)
-
-  Automatically start your server once Webpack's build completes.
+  <Card
+    href="https://github.com/ericclemmons/start-server-webpack-plugin"
+    title={<code>start-server-webpack-plugin</code>}
+  >
+    <p>Automatically start your server once Webpack's build completes.</p>
+  </Card>
+</section>
 
 ## Blog
 
-<section>
+<section className="flex flex-wrap -mx-2">
   {posts.map(({ href, title, snippet }) => (
     <Card cta="Read →" href={href} title={title}>
       {snippet}
