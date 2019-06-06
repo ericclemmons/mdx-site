@@ -5,8 +5,6 @@ import { SocialIcon } from "react-social-icons";
 import { Card } from "./Card";
 import CodeBlock from "./CodeBlock";
 
-const Link = (props: any) => <React.Fragment {...props} />;
-
 export const components = {
   a(props: any) {
     return <a className="text-purple-600 hover:text-purple-900" {...props} />;

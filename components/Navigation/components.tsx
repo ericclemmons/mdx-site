@@ -1,8 +1,6 @@
 import React from "react";
 import { components as contentComponents } from "../Content/components";
 
-const Link = (props: any) => <React.Fragment {...props} />;
-
 export const components = {
   ...contentComponents,
 
