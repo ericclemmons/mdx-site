@@ -6,13 +6,13 @@ import path from "path";
 import serve from "serve-handler";
 
 import { Layout } from "../components/Layout";
-import { defaultContentDir, defaultPublicDir } from "./utils/defaults";
+import { defaultContentDir } from "./utils/defaults";
 import getMDX from "./utils/getMDX";
 import renderMDX from "./utils/renderMDX";
 import resolveProps from "./utils/resolveProps";
 
 export default router(
-  get("(:folder)", async (req, res) => {
+  get("(:folder)", async req => {
     const { ext } = path.parse(req.url as string);
 
     // Ignore potentially static files
@@ -48,12 +48,12 @@ export default router(
       },
       {
         sendError(
-          absolutePath: string,
-          response: ServerResponse,
-          acceptsJSON: boolean,
-          root: string,
-          handlers: any,
-          config: any,
+          _absolutePath: string,
+          _response: ServerResponse,
+          _acceptsJSON: boolean,
+          _root: string,
+          _handlers: any,
+          _config: any,
           error: {
             statusCode: number;
             code: string;

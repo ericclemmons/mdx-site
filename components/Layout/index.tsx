@@ -3,10 +3,6 @@ import { Content } from "../Content";
 import { Navigation } from "../Navigation";
 import { ResponsiveBadge } from "../ResponsiveBadge";
 
-const Head = (props: any) => {
-  return <head {...props} />;
-};
-
 export const Layout = (props: any) => (
   <div className="antialiased font-serif text-gray-800">
     {process.env.NODE_ENV === "development" && <ResponsiveBadge />}

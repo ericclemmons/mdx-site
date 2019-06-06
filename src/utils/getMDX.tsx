@@ -3,7 +3,6 @@ import MDX from "@mdx-js/runtime";
 import fm from "front-matter";
 import fse from "fs-extra";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 
 import { defaultContentDir } from "./defaults";
 
