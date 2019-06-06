@@ -16,7 +16,7 @@ export const Layout = (props: any) => (
     <div className="md:flex mx-auto z-10 relative md:max-w-4xl">
       <div className="md:w-64">
         <nav
-          className="md:fixed md:w-64 p-8 md:p-4 text-white"
+          className="md:fixed md:w-64 p-8 md:p-4 text-white max-h-screen overflow-y-auto"
           style={{
             textShadow: "0 1px 1px rgba(0, 0, 0, 0.25)"
           }}
