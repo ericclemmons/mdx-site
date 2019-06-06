@@ -1,5 +1,6 @@
 // @ts-ignore
 import MDX from "@mdx-js/runtime";
+import { minify } from "html-minifier";
 import { send } from "micro";
 import { router, get } from "microrouter";
 // @ts-ignore
@@ -13,7 +14,7 @@ import path from "path";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { Layout as DefaultLayout } from "./components/Layout";
+import { Layout as DefaultLayout } from "../components/Layout";
 
 const readFile = promisify(fs.readFile);
 
@@ -116,7 +117,8 @@ export default router(
         .concat("...")
     } = attributes;
 
-    return `
+    return minify(
+      `
       <!doctype html>
       <html lang="en">
         <head>
@@ -153,7 +155,21 @@ export default router(
 
         <script src="https://unpkg.com/quicklink@1.0.0/dist/quicklink.umd.js"></script>
       </html>
-    `;
+    `,
+      {
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: true,
+        removeAttributeQuotes: true,
+        removeEmptyAttributes: true,
+        removeOptionalTags: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        caseSensitive: true
+      }
+    );
   }),
 
   get("/*", async (req, res) => {
