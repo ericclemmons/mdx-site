@@ -1,21 +1,20 @@
 // @ts-ignore
 import MDX from "@mdx-js/runtime";
 import fm from "front-matter";
-import fs from "fs";
+import fse from "fs-extra";
 import globby from "globby";
 import React from "react";
 import path from "path";
 import { promisify } from "util";
 
-const readFile = promisify(fs.readFile);
-const contentPath = path.resolve(process.cwd(), "content");
+const contentPath = path.join(process.cwd(), "content");
 
 export const posts = async () => {
   const files = await globby(`${contentPath}/blog/**/index.mdx`, {
     absolute: true
   });
 
-  const mdxs = await Promise.all(files.map(file => readFile(file, "utf8")));
+  const mdxs = await Promise.all(files.map(file => fse.readFile(file, "utf8")));
   const posts = mdxs
     .map((mdx, i) => {
       const href = files[i].replace(contentPath, "").replace("/index.mdx", "");

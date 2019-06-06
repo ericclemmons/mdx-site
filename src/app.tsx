@@ -6,7 +6,7 @@ import { router, get } from "microrouter";
 // @ts-ignore
 import serve from "serve-handler";
 
-import fs from "fs";
+import fse from "fs-extra";
 import { ServerResponse, IncomingMessage } from "http";
 import { promisify } from "util";
 import fm from "front-matter";
@@ -15,8 +15,6 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { Layout as DefaultLayout } from "../components/Layout";
-
-const readFile = promisify(fs.readFile);
 
 const resolve = (...segments: any) => {
   try {
@@ -33,7 +31,7 @@ const getMDX = async (folder: string) => {
     return;
   }
 
-  return await readFile(mdxPath, "utf8");
+  return await fse.readFile(mdxPath, "utf8");
 };
 
 const getExports = async (folder: string, req: IncomingMessage) => {
