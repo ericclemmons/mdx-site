@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "alias": "ericclemmons.com",
   "builds": [
     {
       "src": "package.json",
