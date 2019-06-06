@@ -79,7 +79,7 @@ const getExports = async (folder: string, req: IncomingMessage) => {
 };
 
 export default router(
-  get("/(:folder)", async (req, res) => {
+  get("(:folder)", async (req, res) => {
     const { ext } = path.parse(req.url as string);
 
     // Ignore potentially static files
