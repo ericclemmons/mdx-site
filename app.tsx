@@ -102,6 +102,10 @@ export default router(
     const { default: Layout = DefaultLayout, ...scope } = exports;
     const { title } = attributes;
 
+    if (!title) {
+      throw new Error(`${folder} is missing a "title"`);
+    }
+
     const markup = renderToStaticMarkup(
       <Layout>
         <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
