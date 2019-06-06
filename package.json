@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "node --require ts-node/register src/build",
-    "dev": "node --require ts-node/register src/server"
+    "dev": "node --require ts-node/register src/server",
+    "now-build": "yarn build",
+    "deploy": "npx now"
   },
   "devDependencies": {
     "@types/finalhandler": "^1.1.0",
