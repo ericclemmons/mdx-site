@@ -12,7 +12,7 @@ export const Card = ({ cta, href, children, title }: any) => (
   >
   */
   <div className="md:w-1/2 px-2 w-full">
-    <section className="bg-white shadow-lg overflow-hidden rounded-lg mb-8">
+    <section className="bg-white shadow-md overflow-hidden rounded-lg mb-8">
       {title && (
         <header className="relative">
           <a
