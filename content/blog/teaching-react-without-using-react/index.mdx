@@ -1,0 +1,131 @@
+---
+firstPublishedAt: 1477275533801
+latestPublishedAt: 1477275533801
+slug: teaching-react-without-using-react
+title: Teaching React Without Using React.
+---
+
+Over a month ago, our remote team of front-end developers visited our Houston office for meetings, social outings, and knowledge sharing.
+
+This team typically works on **WordPress** sites using **PHP, HTML,
+SASS/LESS/CSS**, I wanted to introduce them to **React**, as it’s been the foundation of our major applications for _2 years._
+
+_You may have noticed that our team designations of “front-end” and “backend” are less & less sense fitting nowadays. “Front-end” is typically responsible for authoring & theming, while “backend” work on full-stack business applications._
+
+The first question I asked myself was:
+
+### _“**How should I teach React to PHP developers?**”_
+
+- Do I show them _create-react-app_? **No.**
+
+- Webpack? **No.**
+
+- Babel? **No.**
+
+- Inline styles? **Heck no.**
+
+### What makes React important is the shift from global, template-based layouts to distinct, data-driven components.
+
+---
+
+# Thinking in “Components”
+
+![Common PHP + HTML usage. (**Notice the REPL output below**)](https://cdn-images-1.medium.com/max/3144/1*-tx6apx0xY32J0bTinCy_w.png)
+
+For us, the cleanest PHP + WordPress themes still rely on a great deal of
+templates abstracted into partials, custom PHP functions for lifecycle hooks,
+and custom JavaScript/Styling that’s stored, compiled, & bundled separately from the partials that need them.
+
+### A direct byproduct of this is the CSS variable & selector bloat that’s impossible to stave off due to **CSS cascading risk as well as styles**. _(Over-bundling of JavaScript is common, too.)_
+
+![Heredocs make for consistent HTML blocks.](https://cdn-images-1.medium.com/max/3144/1*Ut7ZoP0kmA8-g90cOybKIg.png)
+
+The first step was to show that templates are visually clearer when markup is grouped, rather than concatenated across several logic blocks.
+
+![Functional PHP components.](https://cdn-images-1.medium.com/max/3144/1*aJCVpgDzDpDDpQ9bfwzzZA.png)
+
+Next, it’s clear that components can exist in PHP in a way that’s WordPress-agnostic and visually similar their JavaScript equivalent.
+
+This simplifies the conversion of static content into rich, dynamic content.
+
+![A few syntax changes & PHP is turned into JavaScript!](https://cdn-images-1.medium.com/max/3144/1*JwFQ4EXWGALq7_50wFOthg.png)
+
+As evident here, converting PHP into JavaScript was deceptively easy.
+
+---
+
+# A Practical Example
+
+Working at [HigherEducation.com](http://www.highereducation.com/), a very common scenario is for a user to search for online programs in their area:
+
+![Generic form to search online programs.](https://cdn-images-1.medium.com/max/3144/1*tjK31VtrILRSGtd-O_W0FQ.png)
+
+Using this scenario & our preceding examples of functional components, it’s a cinch to draw the lines of abstraction & convert standard HTML into components:
+
+![Introducing the <Select> component.](https://cdn-images-1.medium.com/max/3144/1*D-Rum0NVgw_eIHW6HWrwDA.png)
+
+We can continue abstracting away markup into components until we strike a balance between terseness and flexibility:
+
+![Introducing the <Input> component.](https://cdn-images-1.medium.com/max/3144/1*0Isw3_h8wCy1Z7C3bAe9_g.png)
+
+Components can abstract away as little or as much as you like.
+
+Where you draw the line is very much up to you and where you drawn the line of abstraction & maintainability.
+
+---
+
+# A Functioning Widget in Vanilla JavaScript
+
+Now that we’re _thinking in components_, the next logical step was to make our form dynamic by **tracking application state in a plain JavaScript object**.
+
+![](https://cdn-images-1.medium.com/max/3144/1*tIAJezyiJbHlEw1ODDJhvw.png)
+
+Our _render_ function **completely destroys the DOM and re-renders our view** to drive home the point that the view is a result of our state.
+
+_(To help round out the example, we’re making an AJAX request for the data after our initial render.)_
+
+![Components can be very dynamic, as long as the state is, too!](https://cdn-images-1.medium.com/max/3144/1*27K5eKSKjjdakSmp1tswwg.png)
+
+Even further, the _Widget_ component shows a loading indicator until a data _feed_ is provided.
+
+_(For this demo, the component also renders the state object as a string into the DOM. This way, as the user interacts with the Widget and the view re-renders, the state is visibly the cause of the change.)_
+
+![How we define our components is subjective and situation-specific.](https://cdn-images-1.medium.com/max/3144/1*drSZF6HZfrCMhrxW3Z5qVw.png)
+
+With each component, we can clearly see how data is passed around and what each component’s expectations are.
+
+Using template literals in JavaScript, it’s easy to forget that these are plain strings. Instead, you start seeing _functionality_.
+
+![Vanilla JS Widget](https://cdn-images-1.medium.com/max/1812/1*R6ILLZcFYYLB7YRFXYP_vg.gif)
+
+# The Functioning Widget in React & JSX
+
+Lastly, the React (JSX) version is merely a syntax change to the components & using _react-dom_ to render.
+
+The only React-specific change to our benefit is being able to supply a custom _onChange_ to the form, rather than attaching an event listener to the _document.body_.
+
+![Converting template literals to JSX completes the circle.](https://cdn-images-1.medium.com/max/3144/1*LKngMsJPhrEi4QsDxORlMg.png)
+
+### **Well-designed components shouldn’t need a massive rewrite to work with another renderer.**
+
+![React Widget](https://cdn-images-1.medium.com/max/1848/1*7cuPoGe9J6AE3Nvpd5UOUw.gif)
+
+The selling points of React in comparison to the Vanilla Widget were:
+
+- **Virtual DOM**. Updating the DOM vs. destructively removing it maintains tab indexes, focus, and other expectations of static markup.
+
+- **Normalized Events**. It’s easy to forget about this, but standardized events greatly simplify that last round of QA when you’re trying to figure out why your app doesn’t work in Safari (or whoever is the new Internet Explorer).
+
+- **Lifecycle Hooks**. Being able to fetch data _when_ a specific component needs it or integrate with 3rd party scripts is an essential escape hatch.
+
+# How’d it Go?
+
+The *Ah-hah! *moment for the group was watching the DOM get completely destroyed & faithfully re-rendered **purely **from the _state._
+
+Although, when you think about it, **this is already how PHP & server-side rendering works**: the request comes in, the view references the current state of the request (e.g. _\$\_GET_ & _\$\_POST_), returns the output, rinse & repeat.
+
+> I’ve spoken about this very topic at Space City JS: [https://github.com/ericclemmons/mvc-to-react](https://github.com/ericclemmons/mvc-to-react)
+
+---
+
+The key takeaway is that **React has changed how we tackle building complex applications**. Instead of blindly enforcing DRY or “separation of concerns”, we eagerly co-locate data, logic, & aesthetics with the components that know best so progress can be made, rather than needlessly stifled.

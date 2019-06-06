@@ -1,0 +1,93 @@
+---
+firstPublishedAt: 1453405235151
+latestPublishedAt: 1453407083920
+slug: dogfooding-your-open-source-projects
+title: Dogfooding Your Open-Source Projects
+---
+
+There’s a discernible, stark difference libraries created **as an idea** compared to those **out of a business need**.
+
+The evolution tends to look like:
+
+1. Initial release of the experiment.
+
+1. Discovery through external “What about…”, “What if…” and “How do I…” issues.
+
+1. `</Refactor>`
+
+1. Author(s) personally use it in real-world scenario.
+
+1. `</Refactor>`
+
+1. **Nailed it.**
+
+---
+
+With this in mind, while [spinning up several new projects](https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4), we naturally discussed the **most important thing to answer when starting any project**:
+
+> What folder structure do we want to use?
+
+Every project I try something new in the hopes of either improving, or better-understanding why our past decisions are still correct.
+
+This time, I wanted to attempt the following:
+
+### What if we built our applications with the intent to open-source from the very beginning?
+
+#### A New Project Structure
+
+So, we settled on the following structure, notably the distinction between **/src **and **/lib**:
+
+![Finally, no more **/utils**!](https://cdn-images-1.medium.com/max/3328/1*LvIKVQSFaQU7hzW3UyYqGQ.png)
+
+In practice, we’ve been able to open-source several projects ranging from tiny utilities to well-received libraries:
+
+- [React Resolver](https://github.com/ericclemmons/react-resolver)
+
+- [Nginx LB](https://github.com/willrstern/tutum-nginx-load-balancing) for [Tutum.co](https://www.tutum.co/)
+
+- [grunt-angular-templates](https://github.com/ericclemmons/grunt-angular-templates)
+
+- [start-cluster](https://github.com/ericclemmons/start-cluster)
+
+- [npm-install-loader](https://github.com/ericclemmons/npm-install-loader)
+
+#### 21 Days Later
+
+Not even a month into the New Year on a new project and already I’ve been creating placeholders for functional, but not yet production-ready libraries.
+
+![Coming soon — libraries with practical use-cases.](https://cdn-images-1.medium.com/max/5760/1*kYvDA74J-RK50_KfxFrELg.png)
+
+#### Setting It Up
+
+With Webpack, it’s trivial:
+
+<iframe
+  width="0"
+  height="0"
+  src=""
+  frameborder="0"
+  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+/>
+
+With Browserify, I’m [not so sure.](https://github.com/substack/node-browserify/issues/767) The official answer seems to be [versioning them in node_modules](https://github.com/substack/browserify-handbook#organizing-modules).
+
+#### Impact
+
+Besides *actively *working towards contributing to the open-source landscape, this has several obvious benefits:
+
+- **Libraries are grounded in being applicable, not theoretical.** This shows in the terseness of APIs, the initial design to work _with_ the ecosystem around it, and already have a short-list of _what’s next_.
+
+- **Application-level logic & dependencies are de-coupled. **Leveraging _/lib_ naturally creates a ripple-effect throughout your application, reducing boilerplate, clarifying concerns, and narrowing scope.
+
+- **No more _../../../../../../../../../../../utils/dat-path-tho.js!_**
+
+- Once released, **no application code has to change**. Simply _npm install _& remove the corresponding folder in _/lib_.
+
+Personally, I wait for the parent application to ship so that these internal libraries are “dogfooded” with **production-level traffic & scrutiny**, make a few tweaks, then release the _v1.0.0_ of these projects*.*
+
+**As a result, the first release is _much closer_ to others’ needs and less likely to see churn.**
+
+---
+
+_If you’re all about improving the “Developer Experience”, I’d love to [hear from you on Twitter](https://twitter.com/ericclemmons/)!_

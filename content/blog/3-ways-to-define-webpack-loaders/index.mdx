@@ -1,0 +1,79 @@
+---
+firstPublishedAt: 1451180807070
+latestPublishedAt: 1451180807070
+slug: 3-ways-to-define-webpack-loaders
+title: 3 Ways to Define Webpack Loaders
+---
+
+Webpack loaders are [executed opposite of how many expect](https://webpack.github.io/docs/loaders.html#loader-order) (right-to-left when a string, bottom-to-top when an array) such that the final loader returns Javascript.
+
+Once you get past that, the next implementation detail to contend with is writing query parameters to configure each loader, which can get unwieldy.
+
+---
+
+1. Ridiculous Query String With Bizarre Punctuation:
+
+```js
+module.exports = {
+  module: {
+    loaders: [
+      {
+        test: /\.scss$/,
+        loader:
+          "style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded"
+      }
+    ]
+  }
+};
+```
+
+2. Array of Query Strings (But Aren’t URLs?)
+
+```js
+module.exports = {
+  module: {
+    loaders: [
+      {
+        test: /\.scss$/,
+        loaders: [
+          "style",
+          "css",
+          "autoprefixer?browsers=last 2 version",
+          "sass?outputStyle=expanded"
+        ]
+      }
+    ]
+  }
+};
+```
+
+3. Array of Specialized Loaders (But Less “DRY”):
+
+```js
+module.exports = {
+  module: {
+    loaders: [
+      {
+        test: /\.scss$/,
+        loader: "style"
+      },
+      {
+        test: /\.scss$/,
+        loader: "css"
+      },
+      {
+        test: /\.scss$/,
+        loader: "autoprefixer",
+        query: { browsers: "last 2 version" }
+      },
+      {
+        test: /\.scss$/,
+        loader: "sass",
+        query: { outputStyle: "expanded" }
+      }
+    ]
+  }
+};
+```
+
+Personally, I prefer the final version as it’s easier to compose a chain of transformers and configure loaders with complex queries.

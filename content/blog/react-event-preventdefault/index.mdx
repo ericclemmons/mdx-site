@@ -1,0 +1,98 @@
+---
+firstPublishedAt: 1446704501619
+latestPublishedAt: 1446704501619
+slug: react-event-preventdefault
+title: React & event.preventDefault()
+---
+
+We recently shipped a UX improvement where we replaced our simplistic address fields with a [Google Place Autocomplete Address Form](https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform).
+
+_Queue broadcast voice…_
+
+#### Previously, on Forms…
+
+![Address + Zip Code lookup.](https://cdn-images-1.medium.com/max/774/1*5vdR8HZ7IZFyIp04LNy3tw.gif)
+
+#### Next week, on Forms…
+
+![Less keystrokes & power of Google.](https://cdn-images-1.medium.com/max/774/1*IrSgaerLsmNzdRvZrTnszA.gif)
+
+If you’re anything like me, you probably _rarely_ use your mouse and instead press **Enter** on your keyboard. Apparently so does everyone else.
+
+### Pressing **Enter** would _immediately_ submit the form before the formatted address was converted into individual fields.
+
+Luckily, I know how to Javascript, so I’ll just prevent the **Enter** from propagating up:
+
+```js
+handleKeyDown(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault(); // Let's stop this event.
+    event.stopPropagation(); // Really this time.
+
+    alert("Is it stopped?");
+
+    // "Hahaha, I'm gonna submit anyway!" - Chrome
+  }
+}
+```
+
+#### Why Don’t Events in React Work as Expected?
+
+After several choice words, a [comment buried in StackOverflow](http://stackoverflow.com/questions/24415631/reactjs-syntheticevent-stoppropagation-only-works-with-react-events#comment37772453_24415631) offers this:
+
+> React’s actual event listener is also at the root of the document, meaning the click event has already bubbled to the root. You can use event.nativeEvent.stopImmediatePropagation to prevent other event listeners from firing, but order of execution is not guaranteed. — [ssorallen](http://stackoverflow.com/users/368697/ssorallen)
+
+Sure enough, React’s documentation [Interactivity and Dynamic UIs](https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation) inexplicably says:
+
+> React doesn’t actually attach event handlers to the nodes themselves. When React starts up, it starts listening for all events at the top level using a single event listener.
+
+So, this is great for memory usage, but **insanely confusing** when you attempt to leverage the standard event APIs. In fact, React events are actually **Synthetic Events**, not **Native Events**.
+
+### With React, events are to be observed, not mutated or intercepted.
+
+#### A Wild Solution Appears
+
+Because our forms produce HTTP GET/POST-friendly HTML, we wanted to ensure that standard functionality was not broken (e.g. pressing **Enter**, or pressing **Go** on a mobile keyboard).
+
+However, we still needed to ensure that normal user behavior didn’t break our improved functionality.
+
+### The solution was to g**o back to Native Events.**
+
+```js
+componentDidMount() {
+  // Direct reference to autocomplete DOM node
+  // (e.g. <input ref="autocomplete" ... />
+  const node = React.findDOMNode(this.refs.autocomplete);
+
+  // Evergreen event listener || IE8 event listener
+  const addEvent = node.addEventListener || node.attachEvent;
+
+  addEvent(“keypress”, this.handleKeyPress, false);
+}
+
+componentWillUnmount() {
+  const removeEvent = node.removeEventListener || node.detachEvent;
+
+  // Reduce any memory leaks
+  removeEvent("keypress", this.handleKeyPress);
+}
+
+handleKeyPress(event) {
+  // [Enter] should not submit the form when choosing an address.
+  if (event.keyCode === 13) {
+    event.preventDefault();
+  }
+}
+```
+
+Sure enough, if you’re using React v0.14 already, there’s a library for this:
+
+> [https://github.com/erikras/react-native-listener](https://github.com/erikras/react-native-listener)
+
+---
+
+I’m genuinely surprised that this expectation of event handling is quietly broken in React.
+
+I would have expected that, since events are turned into **SyntheticEvents**, the **event.preventDefault() **and **event.stopPropagation()** would call **console.warn** or **console.error** due to the break in functionality.
+
+I hope this is more of an edge-case due to our forms \*actually submitting when the user presses **Enter\***, and not a situation others come across unwittingly.
