@@ -102,10 +102,6 @@ export default router(
     const { default: Layout = DefaultLayout, ...scope } = exports;
     const { title } = attributes;
 
-    if (!title) {
-      throw new Error(`${folder} is missing a "title"`);
-    }
-
     const markup = renderToStaticMarkup(
       <Layout>
         <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
@@ -126,7 +122,7 @@ export default router(
         <head>
           <meta charset="utf-8">
 
-          <title>${title}</title>
+          <title>${title || "Eric Clemmons"}</title>
           <meta name="description" content="${description}" />
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
