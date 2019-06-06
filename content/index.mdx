@@ -22,7 +22,7 @@ description: I specialize in building remote teams & developing full-stack appli
 
 <section>
   {posts.map(({ attributes, href, Snippet }) => (
-    <Card cta="Read →" href={href} title={attributes.title}>
+    <Card cta="Read →" href={href} key={href} title={attributes.title}>
       <Snippet />
     </Card>
   ))}
