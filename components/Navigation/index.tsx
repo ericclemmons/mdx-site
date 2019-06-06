@@ -8,7 +8,7 @@ import React from "react";
 import { components } from "./components";
 
 export const Navigation = () => {
-  const mdx = readFileSync(`${__dirname}/../../content/about.mdx`, "utf8");
+  const mdx = readFileSync(`${__dirname}/about.mdx`, "utf8");
 
   return (
     <MDXProvider components={components}>
