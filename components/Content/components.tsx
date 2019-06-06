@@ -3,6 +3,7 @@ import React from "react";
 import { SocialIcon } from "react-social-icons";
 
 import { Card } from "./Card";
+import CodeBlock from "./CodeBlock";
 
 const Link = (props: any) => <React.Fragment {...props} />;
 
@@ -73,7 +74,9 @@ export const components = {
   },
 
   h4(props: any) {
-    return <h4 className="font-semibold mt-8 text-2xl" {...props} />;
+    return (
+      <h4 className="font-semibold mt-8 text-2xl leading-relaxed" {...props} />
+    );
   },
 
   hr(props: any) {
@@ -95,6 +98,14 @@ export const components = {
 
   p(props: any) {
     return <p className="text-lg py-2" {...props} />;
+  },
+
+  pre(props: any) {
+    return (
+      <div className="my-4 rounded-lg overflow-hidden" {...props}>
+        <CodeBlock {...props.children.props} />
+      </div>
+    );
   },
 
   SocialIcon,
