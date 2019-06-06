@@ -1,7 +1,13 @@
-# Eric Clemmons' Website
+# [Eric Clemmons' Website][site]
 
-> Static blog powered by [TypeScript][ts], [MDX][mdx], [React][react],
-> [TailwindCSS][tailwind], [hot-module-replacement][hmr], and [Now][now].
+> Static markdown blog powered by:
+>
+> - `ʦ` [TypeScript][ts]
+> - `↓` [MDX][mdx]
+> - `⚛`️ [React][react]
+> - `♒︎` [TailwindCSS][tailwind]
+> - `♻` [hot-module-replacement][hmr]
+> - `▲` [Now][now]
 >
 > ![lighthouse score](lighthouse.png)
 
@@ -42,5 +48,6 @@ The site is statically rendered and can be deployed via [Now][now].
 [mdx]: https://mdxjs.com/
 [now]: https://zeit.co/now
 [react]: https://reactjs.org/
+[site]: https://ericclemmons.com/
 [tailwind]: https://tailwindcss.com/
 [ts]: https://www.typescriptlang.org/
