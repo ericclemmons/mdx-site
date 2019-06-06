@@ -2,7 +2,7 @@ require("hot-module-replacement")({
   ignore: /node_modules/
 });
 
-import micro from "micro";
+import micro, { send } from "micro";
 
 if (module.hot) {
   console.info("🔥  HMR Enabled");
@@ -13,8 +13,12 @@ if (module.hot) {
   console.info("💤  HMR Disabled");
 }
 
-micro((...args) => {
-  return require("./app").default(...args);
+micro((req, res) => {
+  return require("./app")
+    .default(req, res)
+    .catch((error: Error) => {
+      send(res, 500, error.message);
+    });
 }).listen(3000, () => {
   console.log(`🚀  Listening on http://localhost:3000/`);
 });
