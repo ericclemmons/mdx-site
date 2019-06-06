@@ -1,7 +1,6 @@
 import fse from "fs-extra";
 import ora, { Ora } from "ora";
 import path from "path";
-import { promisify } from "util";
 
 import {
   defaultContentDir,
@@ -47,7 +46,7 @@ let spinner: Ora;
     const target = path.join(defaultOutputDir, folder, "index.html");
     spinner = ora().start(`Building ${folder || "/"}`);
 
-    const mdx = await getMDX(defaultContentDir, folder);
+    const mdx = await getMDX(page);
     const props = await resolveProps(defaultContentDir, folder);
     const output = await renderMDX(mdx, {
       default: Layout,

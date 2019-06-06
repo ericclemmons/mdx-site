@@ -5,7 +5,7 @@ import { minify } from "html-minifier";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { DefaultLayout, defaultTemplate } from "./defaults";
+import { DefaultLayout, defaultTemplate, defaultTitle } from "./defaults";
 
 interface MDX {
   readonly attributes: any;
@@ -34,7 +34,7 @@ export default async function renderMDX(mdx: MDX, props: any) {
   } = attributes;
 
   const html = Object.entries({
-    title,
+    title: title || defaultTitle,
     description,
     markup
   }).reduce((acc, [replacement, value]) => {
@@ -43,6 +43,10 @@ export default async function renderMDX(mdx: MDX, props: any) {
       value
     );
   }, defaultTemplate);
+
+  if (process.env.NODE_ENV !== "production") {
+    return html;
+  }
 
   // TODO Disable in development
   const minified = minify(html, {

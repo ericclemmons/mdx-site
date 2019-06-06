@@ -1,81 +1,15 @@
-// @ts-ignore
-import MDX from "@mdx-js/runtime";
-import { minify } from "html-minifier";
+import { ServerResponse } from "http";
 import { send } from "micro";
 import { router, get } from "microrouter";
+import path from "path";
 // @ts-ignore
 import serve from "serve-handler";
 
-import fse from "fs-extra";
-import { ServerResponse, IncomingMessage } from "http";
-import { promisify } from "util";
-import fm from "front-matter";
-import path from "path";
-import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-
-import { Layout as DefaultLayout } from "../components/Layout";
-
-const resolve = (...segments: any) => {
-  try {
-    return require.resolve(path.join(process.cwd(), ...segments));
-  } catch (error) {
-    return null;
-  }
-};
-
-const getMDX = async (folder: string) => {
-  const mdxPath = resolve("content", folder, "index.mdx");
-
-  if (!mdxPath) {
-    return;
-  }
-
-  return await fse.readFile(mdxPath, "utf8");
-};
-
-const getExports = async (folder: string, req: IncomingMessage) => {
-  const exportsPath = resolve("content", folder);
-
-  if (!exportsPath) {
-    return {
-      default: DefaultLayout
-    };
-  }
-
-  const { default: Layout = DefaultLayout, ...exports } = await import(
-    exportsPath
-  );
-
-  const keys = Object.keys(exports);
-  const values = await Promise.all(
-    Object.entries(exports).map(([prop, value]) => {
-      // Return layout as-is
-      if (prop === "default") {
-        return value;
-      }
-
-      if (typeof value === "function") {
-        return value(req);
-      }
-
-      // Enforce all exports being functions, otherwise we won't be able
-      // to differentiate a Component from a resolver.
-      throw new Error(
-        `${exportsPath}'s ${JSON.stringify(prop)} should be a Function`
-      );
-    })
-  );
-
-  const scope = keys.reduce((acc, key, i) => {
-    return {
-      ...acc,
-      [key]: values[i]
-    };
-  }, {});
-
-  return { default: Layout, ...scope };
-};
+import { Layout } from "../components/Layout";
+import { defaultContentDir, defaultPublicDir } from "./utils/defaults";
+import getMDX from "./utils/getMDX";
+import renderMDX from "./utils/renderMDX";
+import resolveProps from "./utils/resolveProps";
 
 export default router(
   get("(:folder)", async (req, res) => {
@@ -86,10 +20,10 @@ export default router(
       return;
     }
 
-    const { folder = "/" } = req.params;
-    const [mdx, exports] = await Promise.all([
-      getMDX(folder),
-      getExports(folder, req)
+    const { folder } = req.params;
+    const [mdx, props] = await Promise.all([
+      getMDX(path.join(defaultContentDir, folder, "index.mdx")),
+      resolveProps(defaultContentDir, folder)
     ]);
 
     // Ignore folders without markup
@@ -97,77 +31,10 @@ export default router(
       return;
     }
 
-    const { attributes, body } = fm(mdx);
-    const { default: Layout = DefaultLayout, ...scope } = exports;
-    const { title } = attributes;
-
-    const markup = renderToStaticMarkup(
-      <Layout>
-        <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
-      </Layout>
-    );
-
-    const {
-      description = renderToStaticMarkup(<MDX>{body}</MDX>)
-        .replace(/(<([^>]+)>)/gi, "")
-        .replace(/\n/g, " ")
-        .slice(0, 150)
-        .concat("...")
-    } = attributes;
-
-    return minify(
-      `
-      <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8">
-
-          <title>${title || "Eric Clemmons"}</title>
-          <meta name="description" content="${description}" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-          <link
-            rel="stylesheet"
-            href="https://unpkg.com/tailwindcss@1.0.1/dist/tailwind.min.css"
-          />
-
-          <style>
-            body {
-              /* https://www.svgbackgrounds.com/#subtle-prism */
-              background-color: #805ad5;
-              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='0' y2='100%25' gradientTransform='rotate(360,640,383)'%3E%3Cstop offset='0' stop-color='%23805ad5'/%3E%3Cstop offset='1' stop-color='%234FE'/%3E%3C/linearGradient%3E%3Cpattern patternUnits='userSpaceOnUse' id='b' width='540' height='450' x='0' y='0' viewBox='0 0 1080 900'%3E%3Cg fill-opacity='0.1'%3E%3Cpolygon fill='%23444' points='90 150 0 300 180 300'/%3E%3Cpolygon points='90 150 180 0 0 0'/%3E%3Cpolygon fill='%23AAA' points='270 150 360 0 180 0'/%3E%3Cpolygon fill='%23DDD' points='450 150 360 300 540 300'/%3E%3Cpolygon fill='%23999' points='450 150 540 0 360 0'/%3E%3Cpolygon points='630 150 540 300 720 300'/%3E%3Cpolygon fill='%23DDD' points='630 150 720 0 540 0'/%3E%3Cpolygon fill='%23444' points='810 150 720 300 900 300'/%3E%3Cpolygon fill='%23FFF' points='810 150 900 0 720 0'/%3E%3Cpolygon fill='%23DDD' points='990 150 900 300 1080 300'/%3E%3Cpolygon fill='%23444' points='990 150 1080 0 900 0'/%3E%3Cpolygon fill='%23DDD' points='90 450 0 600 180 600'/%3E%3Cpolygon points='90 450 180 300 0 300'/%3E%3Cpolygon fill='%23666' points='270 450 180 600 360 600'/%3E%3Cpolygon fill='%23AAA' points='270 450 360 300 180 300'/%3E%3Cpolygon fill='%23DDD' points='450 450 360 600 540 600'/%3E%3Cpolygon fill='%23999' points='450 450 540 300 360 300'/%3E%3Cpolygon fill='%23999' points='630 450 540 600 720 600'/%3E%3Cpolygon fill='%23FFF' points='630 450 720 300 540 300'/%3E%3Cpolygon points='810 450 720 600 900 600'/%3E%3Cpolygon fill='%23DDD' points='810 450 900 300 720 300'/%3E%3Cpolygon fill='%23AAA' points='990 450 900 600 1080 600'/%3E%3Cpolygon fill='%23444' points='990 450 1080 300 900 300'/%3E%3Cpolygon fill='%23222' points='90 750 0 900 180 900'/%3E%3Cpolygon points='270 750 180 900 360 900'/%3E%3Cpolygon fill='%23DDD' points='270 750 360 600 180 600'/%3E%3Cpolygon points='450 750 540 600 360 600'/%3E%3Cpolygon points='630 750 540 900 720 900'/%3E%3Cpolygon fill='%23444' points='630 750 720 600 540 600'/%3E%3Cpolygon fill='%23AAA' points='810 750 720 900 900 900'/%3E%3Cpolygon fill='%23666' points='810 750 900 600 720 600'/%3E%3Cpolygon fill='%23999' points='990 750 900 900 1080 900'/%3E%3Cpolygon fill='%23999' points='180 0 90 150 270 150'/%3E%3Cpolygon fill='%23444' points='360 0 270 150 450 150'/%3E%3Cpolygon fill='%23FFF' points='540 0 450 150 630 150'/%3E%3Cpolygon points='900 0 810 150 990 150'/%3E%3Cpolygon fill='%23222' points='0 300 -90 450 90 450'/%3E%3Cpolygon fill='%23FFF' points='0 300 90 150 -90 150'/%3E%3Cpolygon fill='%23FFF' points='180 300 90 450 270 450'/%3E%3Cpolygon fill='%23666' points='180 300 270 150 90 150'/%3E%3Cpolygon fill='%23222' points='360 300 270 450 450 450'/%3E%3Cpolygon fill='%23FFF' points='360 300 450 150 270 150'/%3E%3Cpolygon fill='%23444' points='540 300 450 450 630 450'/%3E%3Cpolygon fill='%23222' points='540 300 630 150 450 150'/%3E%3Cpolygon fill='%23AAA' points='720 300 630 450 810 450'/%3E%3Cpolygon fill='%23666' points='720 300 810 150 630 150'/%3E%3Cpolygon fill='%23FFF' points='900 300 810 450 990 450'/%3E%3Cpolygon fill='%23999' points='900 300 990 150 810 150'/%3E%3Cpolygon points='0 600 -90 750 90 750'/%3E%3Cpolygon fill='%23666' points='0 600 90 450 -90 450'/%3E%3Cpolygon fill='%23AAA' points='180 600 90 750 270 750'/%3E%3Cpolygon fill='%23444' points='180 600 270 450 90 450'/%3E%3Cpolygon fill='%23444' points='360 600 270 750 450 750'/%3E%3Cpolygon fill='%23999' points='360 600 450 450 270 450'/%3E%3Cpolygon fill='%23666' points='540 600 630 450 450 450'/%3E%3Cpolygon fill='%23222' points='720 600 630 750 810 750'/%3E%3Cpolygon fill='%23FFF' points='900 600 810 750 990 750'/%3E%3Cpolygon fill='%23222' points='900 600 990 450 810 450'/%3E%3Cpolygon fill='%23DDD' points='0 900 90 750 -90 750'/%3E%3Cpolygon fill='%23444' points='180 900 270 750 90 750'/%3E%3Cpolygon fill='%23FFF' points='360 900 450 750 270 750'/%3E%3Cpolygon fill='%23AAA' points='540 900 630 750 450 750'/%3E%3Cpolygon fill='%23FFF' points='720 900 810 750 630 750'/%3E%3Cpolygon fill='%23222' points='900 900 990 750 810 750'/%3E%3Cpolygon fill='%23222' points='1080 300 990 450 1170 450'/%3E%3Cpolygon fill='%23FFF' points='1080 300 1170 150 990 150'/%3E%3Cpolygon points='1080 600 990 750 1170 750'/%3E%3Cpolygon fill='%23666' points='1080 600 1170 450 990 450'/%3E%3Cpolygon fill='%23DDD' points='1080 900 1170 750 990 750'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect x='0' y='0' fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect x='0' y='0' fill='url(%23b)' width='100%25' height='100%25'/%3E%3C/svg%3E");
-              background-attachment: fixed;
-              background-size: cover;
-            }
-
-            twitter-widget {
-              margin-left: auto;
-              margin-right: auto;
-            }
-          </style>
-        </head>
-
-        <body>
-          ${markup}
-        </body>
-
-        <script src="https://unpkg.com/quicklink@1.0.0/dist/quicklink.umd.js"></script>
-      </html>
-    `,
-      {
-        minifyCSS: true,
-        minifyJS: true,
-        removeComments: true,
-        removeAttributeQuotes: true,
-        removeEmptyAttributes: true,
-        removeOptionalTags: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        caseSensitive: true
-      }
-    );
+    return renderMDX(mdx, {
+      default: Layout,
+      ...props
+    });
   }),
 
   get("/*", async (req, res) => {

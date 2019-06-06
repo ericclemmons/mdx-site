@@ -21,9 +21,9 @@ description: I specialize in building remote teams & developing full-stack appli
 ## Blog
 
 <section>
-  {posts.map(({ href, title, snippet }) => (
-    <Card cta="Read →" href={href} title={title}>
-      {snippet}
+  {posts.map(({ attributes, href, Snippet }) => (
+    <Card cta="Read →" href={href} title={attributes.title}>
+      <Snippet />
     </Card>
   ))}
 </section>
