@@ -102,7 +102,7 @@ export const components = {
 
   pre(props: any) {
     return (
-      <div className="my-4 rounded-lg overflow-hidden" {...props}>
+      <div className="my-4 -ml-8" {...props}>
         <CodeBlock {...props.children.props} />
       </div>
     );

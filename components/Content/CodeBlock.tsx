@@ -16,7 +16,10 @@ export default function CodeBlock({
       theme={theme}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }: any) => (
-        <pre className={className} style={{ ...style, padding: "20px" }}>
+        <pre
+          className={`${className} shadow-inner overflow-auto`}
+          style={{ ...style, padding: "20px" }}
+        >
           {tokens.map((line: string[], i: number) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token: string, key: number) => (
