@@ -1,0 +1,60 @@
+---
+date: circular-dependencies-in-node
+layout: post
+title: Circular Dependencies in Node
+categories: [node]
+tags: [node]
+---
+
+It's inevitable: you _will_ have circular dependencies at some point in your project.
+
+Unfortunately, I've had this issue time & time again and didn't quite realize _why_
+it was happening until recently.
+
+### The Problem
+
+> When a file is `require`d in Node, its `module.exports` is immediately
+> defined as an empty `{}`.
+
+Most of my code was written like so, where I exported my object _at the end_ of the file:
+
+{% highlight javascript linenos %}
+// my-factory.js
+var factoryFeatures = require('./features');
+
+var MyFactory = function(deps) {
+...
+};
+
+MyFactory.prototype.build = function(specs) {
+...
+// Create something from the provided specs using
+// the required `factoryFeatures`.
+...
+};
+
+module.exports = MyFactory;
+{% endhighlight %}
+
+The moment one of my dependencies (say, via line `#2`) attempted to
+`require('../my-factory')`, it would get a reference to that empty `{}`.
+
+But, everything goes off the rails during runtime because, on line `#15`,
+_I've overridden `{}` with `MyFactory`_!
+
+### The Solution
+
+Add methods/factories onto the initial `{}` so references are never overwritten:
+
+{% highlight javascript %}
+// my-factory.js
+...
+
+// Notice how the function is exported as an additional {} property
+module.exports.factory = MyFactory;
+{% endhighlight %}
+
+This way, at runtime, `factory` is available via the original `module.exports` reference.
+
+Now all circular dependencies are referencing the same object from the first
+`require` to the last!

@@ -1,0 +1,116 @@
+---
+date: 2014-01-04
+layout: post
+title: Using HTML5, Not Hash Routes
+categories: [angular]
+tags: [angular, html5, javascript]
+---
+
+By default AngularJS' [`$locationProvider`][1] defaults to URLs like:
+
+> http://localhost:3000/#/admin/
+
+If in the future you may decide on one of the following:
+
+- Your application's URLs will [should have longevity][2].
+- You may switch from AngularJS to [another framework][3].
+- You may render URLs on the server to [improve performance, like Twitter.com did][4].
+
+Then, you should switch to HTML5 routing instead of using the default hash URLs.
+
+Besides, **it's easy and takes 2 minutes**.
+
+---
+
+### Step 1: Re-enable `X-Requested-With` Header
+
+For some reason, this was removed around [v1.1.5][6], but it's crucial
+for your AngularJS app to tell your server when it's making AJAX requests
+for, say, an `ng-include` or `templateUrl`.
+
+{% highlight javascript %}
+// client/app.js
+angular
+.module('app', [])
+.config([
+'$httpProvider',
+    function($httpProvider) {
+// Expose XHR requests to server
+\$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+}
+])
+;
+{% endhighlight %}
+
+### Step 2: Enable HTML5 Routing
+
+{% highlight javascript %}
+// client/app.js
+angular
+.module('app', [])
+.config([
+'$httpProvider',
+    '$locationProvider',
+function($httpProvider, $locationProvider) {
+// Expose XHR requests to server
+\$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+      // This is `false` by default
+      $locationProvider.html5Mode(true);
+    }
+
+])
+;
+{% endhighlight %}
+
+### Step 3: Create a Wildcard Route
+
+Assuming you're using [express][5], the **very last route you define**
+will be you're catch-all. This way, any routes you explicitly define on
+the server-side are handled there, while any other routes render the
+client-side page, AngularJS to handle.
+
+{% highlight javascript %}
+// server/app.js
+app.get('/\*', function(req, res) {
+// AJAX requests are aren't expected to be redirected to the AngularJS app
+if (req.xhr) {
+return res.status(404).send(req.url + ' not found');
+}
+
+// `sendfile` requires the safe, resolved path to your AngularJS app
+res.sendfile(path.resolve(\_\_dirname + '/path/to/index.html'));
+});
+{% endhighlight %}
+
+The important part is the check for `req.xhr`. If you didn't include this,
+then using **`ng-include` with a missing template would recursively keep including
+your broken application**.
+
+### Caveats
+
+Even though this solution has worked quite well in my experience (plus, it just
+feels right), there is one draw back:
+**`404`s are now `200`s, as they're now rendered by the client.**
+
+Luckily, this can be remedied a number of ways.
+
+For example, if your server-side application consists of primarily an `/api`
+root URL, then you can have `/api/*` act as a catchall to send a legitimate `404`.
+
+If you want to explicitly serve your AngularJS app **only for AngularJS routes**,
+then you'll have to do more legwork, where your routes are defined as an `Object`
+for use by both the client _and_ server for defining routes.
+
+### Conclusion
+
+Even with those minor nit-picks, I prefer my [SPA][7]s to look & act like
+proper, server-rendered sites as much as possible, especially with minimal effort.
+
+[1]: http://code.angularjs.org/1.2.7/docs/api/ng.$locationProvider
+[2]: http://www.w3.org/Provider/Style/URI.html
+[3]: http://facebook.github.io/react/
+[4]: https://blog.twitter.com/2012/improving-performance-twittercom
+[5]: http://expressjs.com/
+[6]: https://github.com/angular/angular.js/commit/3a75b1124d062f64093a90b26630938558909e8d
+[7]: http://en.wikipedia.org/wiki/Single-page_application
