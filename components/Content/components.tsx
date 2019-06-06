@@ -90,6 +90,10 @@ export const components = {
     );
   },
 
+  li(props: any) {
+    return <li className="leading-relaxed" {...props} />;
+  },
+
   ol(props: any) {
     return <ol className="list-decimal ml-4" {...props} />;
   },
