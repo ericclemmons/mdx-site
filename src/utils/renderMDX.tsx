@@ -56,7 +56,6 @@ export default async function renderMDX(mdx: MDX, props: any) {
     return html;
   }
 
-  // TODO Disable in development
   const minified = minify(html, {
     minifyCSS: true,
     minifyJS: true,

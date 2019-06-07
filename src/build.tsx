@@ -13,6 +13,10 @@ import findAllPages from "./utils/findAllPages";
 import getMDX from "./utils/getMDX";
 import resolveProps from "./utils/resolveProps";
 
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = "production";
+}
+
 const relative = (file: string) => file.replace(process.cwd(), ".");
 let spinner: Ora;
 
