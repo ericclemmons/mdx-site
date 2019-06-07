@@ -28,40 +28,35 @@ For some reason, this was removed around [v1.1.5][6], but it's crucial
 for your AngularJS app to tell your server when it's making AJAX requests
 for, say, an `ng-include` or `templateUrl`.
 
-{% highlight javascript %}
+```js
 // client/app.js
-angular
-.module('app', [])
-.config([
-'$httpProvider',
-    function($httpProvider) {
-// Expose XHR requests to server
-\$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-}
-])
-;
-{% endhighlight %}
+angular.module("app", []).config([
+  "$httpProvider",
+  function($httpProvider) {
+    // Expose XHR requests to server
+    $httpProvider.defaults.headers.common["X-Requested-With"] =
+      "XMLHttpRequest";
+  }
+]);
+```
 
 ### Step 2: Enable HTML5 Routing
 
-{% highlight javascript %}
+```js
 // client/app.js
-angular
-.module('app', [])
-.config([
-'$httpProvider',
-    '$locationProvider',
-function($httpProvider, $locationProvider) {
-// Expose XHR requests to server
-\$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+angular.module("app", []).config([
+  "$httpProvider",
+  "$locationProvider",
+  function($httpProvider, $locationProvider) {
+    // Expose XHR requests to server
+    $httpProvider.defaults.headers.common["X-Requested-With"] =
+      "XMLHttpRequest";
 
-      // This is `false` by default
-      $locationProvider.html5Mode(true);
-    }
-
-])
-;
-{% endhighlight %}
+    // This is `false` by default
+    $locationProvider.html5Mode(true);
+  }
+]);
+```
 
 ### Step 3: Create a Wildcard Route
 
@@ -70,18 +65,18 @@ will be you're catch-all. This way, any routes you explicitly define on
 the server-side are handled there, while any other routes render the
 client-side page, AngularJS to handle.
 
-{% highlight javascript %}
+```js
 // server/app.js
-app.get('/\*', function(req, res) {
-// AJAX requests are aren't expected to be redirected to the AngularJS app
-if (req.xhr) {
-return res.status(404).send(req.url + ' not found');
-}
+app.get("/*", function(req, res) {
+  // AJAX requests are aren't expected to be redirected to the AngularJS app
+  if (req.xhr) {
+    return res.status(404).send(req.url + " not found");
+  }
 
-// `sendfile` requires the safe, resolved path to your AngularJS app
-res.sendfile(path.resolve(\_\_dirname + '/path/to/index.html'));
+  // `sendfile` requires the safe, resolved path to your AngularJS app
+  res.sendfile(path.resolve(__dirname + "/path/to/index.html"));
 });
-{% endhighlight %}
+```
 
 The important part is the check for `req.xhr`. If you didn't include this,
 then using **`ng-include` with a missing template would recursively keep including

@@ -12,6 +12,8 @@ Yes, there are tons of great, StackOverflow-accepted ways to copy giant database
 
 So, when you _have_ to programmatically copy rows between databases in Node...
 
+---
+
 ### Problems with `LIMIT`
 
 When I first attempted this, I ran into several problems:
@@ -36,115 +38,126 @@ The premise is to copy `N` rows that roughly equate to `M` amount of memory.
 
 #### 1. Setup dependencies
 
-{% highlight javascript %}
+```js
 var knex = require('knex');
 var Promise = require('bluebird');
 var ProgressBar = require('progress');
 
 var local = knex.initialize(...);
 var remote = knex.initialize(...);
-{% endhighlight %}
+```
 
 #### 2. Get table stats
 
-{% highlight javascript %}
+```js
 var getStats = function(table) {
-// Query total number of rows (`information_schema` is just an estimate)
-return remote(table).count('_').then(function(response) {
-stats.totalRows = response.shift()['count(_)'];
-})
-// Request DB estimates for table size (approximate)
-.then(function() {
-return remote('information*schema.TABLES').select('data_length', 'index_length').where({
-table_name: table,
-table_schema: this.remote.client.connectionSettings.database,
-});
-})
-// Calculate stats for # of rows & iterations to stay within memory limits
-.then(function(result) {
-// Base variables for insertion chunk calculations
-stats.memoryLimit = 25 * 1024 \_ 1024; // 25Mb
-stats.dataLength = result[0]['data_length'];
-stats.indexLength = result[0]['index_length'];
-stats.totalLength = stats.dataLength + stats.indexLength;
-stats.rowLimit = Math.min(stats.totalRows, Math.ceil(stats.totalRows \* stats.memoryLimit / stats.totalLength));
+  // Query total number of rows (`information_schema` is just an estimate)
+  return remote(table).count('_').then(function(response) {
+    stats.totalRows = response.shift()['count(_)'];
+  })
+  // Request DB estimates for table size (approximate)
+  .then(function() {
+    return remote('information*schema.TABLES').select('data_length', 'index_length').where({
+      table_name: table,
+      table_schema: this.remote.client.connectionSettings.database,
+    });
+  })
+  // Calculate stats for # of rows & iterations to stay within memory limits
+  .then(function(result) {
+    // Base variables for insertion chunk calculations
+    stats.memoryLimit = 25 * 1024 * 1024; // 25Mb
+    stats.dataLength = result[0]['data_length'];
+    stats.indexLength = result[0]['index_length'];
+    stats.totalLength = stats.dataLength + stats.indexLength;
+    stats.rowLimit = Math.min(stats.totalRows, Math.ceil(stats.totalRows * stats.memoryLimit / stats.totalLength));
 
     return stats;
-
-});
+  }})
 };
-{% endhighlight %}
+```
 
 #### 3. Copy table in groups
 
 Now that we have a lot of `stats` based around a _25Mb_ memory limit, now we can copy the table:
 
-{% highlight javascript %}
+```js
 var copyTable = function(table) {
-return getTableStats(table).then(function(stats) {
-// Empty array to make it easy to iterate for insertion group
-var iterations = new Array(Math.ceil(stats.totalRows / stats.rowLimit));
+  return getTableStats(table).then(function(stats) {
+    // Empty array to make it easy to iterate for insertion group
+    var iterations = new Array(Math.ceil(stats.totalRows / stats.rowLimit));
 
     // Promise.reduce ensures iterations are done sequentially, whereas
     // Promise.all/map runs in parallel
-    return Promise.reduce(iterations, function(previous, iteration, i) {
-      var rowOffset = stats.rowLimit * i;
+    return Promise.reduce(
+      iterations,
+      function(previous, iteration, i) {
+        var rowOffset = stats.rowLimit * i;
 
-      return copyRows(table, rowOffset, stats.rowLimit, stats.totalRows);
-    }, []);
-
-});
-{% endhighlight %}
+        return copyRows(table, rowOffset, stats.rowLimit, stats.totalRows);
+      },
+      []
+    );
+  });
+};
+```
 
 #### 4. Copy individual rows
 
 All that our `copyTable` function is missing is `copyRows`:
 
-{% highlight javascript %}
+```js
 var copyRows = function(table, offset, limit, total) {
-return remote(table).select('\*').offset(offset).limit(limit).then(function(rows) {
-// "[DATABASE] Inserting records N-M of O into TABLE"
-var msg = [
-'[' + chalk.yellow(local.client.connectionSettings.database) + ']',
-'Inserting records',
-chalk.green(offset + 1) + '-' + chalk.green(offset + rows.length),
-'of',
-chalk.green(total),
-'into',
-chalk.yellow(table),
-'[:bar] :percent :etas',
-].join(' ');
+  return remote(table)
+    .select("*")
+    .offset(offset)
+    .limit(limit)
+    .then(function(rows) {
+      // "[DATABASE] Inserting records N-M of O into TABLE"
+      var msg = [
+        "[" + chalk.yellow(local.client.connectionSettings.database) + "]",
+        "Inserting records",
+        chalk.green(offset + 1) + "-" + chalk.green(offset + rows.length),
+        "of",
+        chalk.green(total),
+        "into",
+        chalk.yellow(table),
+        "[:bar] :percent :etas"
+      ].join(" ");
 
-    var bar = new Progress(msg, {
-      total: rows.length,
-      width: 20,
-    });
+      var bar = new Progress(msg, {
+        total: rows.length,
+        width: 20
+      });
 
-    // Insert each record individually because it's actually faster (!?)
-    // and gives us a pretty progress bar.
-    return Promise.map(rows, function(row) {
-      return local(table).insert(row).then(function() {
-        bar.tick();
+      // Insert each record individually because it's actually faster (!?)
+      // and gives us a pretty progress bar.
+      return Promise.map(rows, function(row) {
+        return local(table)
+          .insert(row)
+          .then(function() {
+            bar.tick();
+          });
       });
     });
-
-});
 };
-{% endhighlight %}
+```
 
 #### 5. Finish
 
 Finally, kick off the whole promise chain:
 
-{% highlight javascript %}
-copyTable('something_huge').then(function() {
-console.log('Success!');
-process.exit(0);
-}, function(err) {
-console.error(err);
-process.exit(1);
-});
-{% endhighlight %}
+```js
+copyTable("something_huge").then(
+  function() {
+    console.log("Success!");
+    process.exit(0);
+  },
+  function(err) {
+    console.error(err);
+    process.exit(1);
+  }
+);
+```
 
 ![demo](/images/node/sql.gif)
 

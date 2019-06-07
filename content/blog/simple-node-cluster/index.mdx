@@ -30,65 +30,64 @@ Implementation was _dead easy_.
 
 ### 1. Setup our Express application for easy use via `require`:
 
-{% highlight javascript %}
+```js
 // app/server.js
-var app = require('./app');
-var http = require('http');
+var app = require("./app");
+var http = require("http");
 
-http.createServer(app).listen(app.get('port'), function(){
-console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get("port"), function() {
+  console.log("Express server listening on port " + app.get("port"));
 });
-{% endhighlight %}
+```
 
 For development, we will run `node app/server`:
 
-```bash
+```shell
 $ node app/server.js
 Express server listening on port 3000
 ```
 
 ### 2. Create `cluster.js`
 
-{% highlight javascript %}
+```js
 // app/cluster.js
 
-var cluster = require('cluster');
+var cluster = require("cluster");
 
 if (cluster.isMaster) {
-// Count the machine's CPUs
-var cpuCount = require('os').cpus().length;
+  // Count the machine's CPUs
+  var cpuCount = require("os").cpus().length;
 
-// Create a worker for each CPU
-for (var i = 0; i < cpuCount; i += 1) {
-cluster.fork();
-}
+  // Create a worker for each CPU
+  for (var i = 0; i < cpuCount; i += 1) {
+    cluster.fork();
+  }
 
-// Listen for dying workers & start 'em back up!
-cluster.on('exit', function () {
-cluster.fork();
-});
+  // Listen for dying workers & start 'em back up!
+  cluster.on("exit", function() {
+    cluster.fork();
+  });
 } else {
-require('./server');
+  require("./server");
 }
-{% endhighlight %}
+```
 
 ### 3. Update `package.json` to use `cluster.js`
 
-{% highlight json %}
+```json
 // package.json
 {
-...
-"scripts": {
-"start": "node app/cluster"
-},
-...
-{% endhighlight %}
+  "scripts": {
+    "start": "node app/cluster"
+  }
+}
+```
 
 ### 4. Done!
 
 Now on production, `npm start` will run `node app/cluster` and spawn up 4+ instances:
 
-```bash
+```shell
 $ npm start
 
 > api@1.4.2 start /Users/deploy/api

@@ -18,23 +18,23 @@ it was happening until recently.
 
 Most of my code was written like so, where I exported my object _at the end_ of the file:
 
-{% highlight javascript linenos %}
+```js
 // my-factory.js
 var factoryFeatures = require('./features');
 
 var MyFactory = function(deps) {
-...
+  ...
 };
 
 MyFactory.prototype.build = function(specs) {
-...
-// Create something from the provided specs using
-// the required `factoryFeatures`.
-...
+  ...
+  // Create something from the provided specs using
+  // the required `factoryFeatures`.
+  ...
 };
 
 module.exports = MyFactory;
-{% endhighlight %}
+```
 
 The moment one of my dependencies (say, via line `#2`) attempted to
 `require('../my-factory')`, it would get a reference to that empty `{}`.
@@ -46,13 +46,13 @@ _I've overridden `{}` with `MyFactory`_!
 
 Add methods/factories onto the initial `{}` so references are never overwritten:
 
-{% highlight javascript %}
+```js
 // my-factory.js
 ...
 
 // Notice how the function is exported as an additional {} property
 module.exports.factory = MyFactory;
-{% endhighlight %}
+```
 
 This way, at runtime, `factory` is available via the original `module.exports` reference.
 
