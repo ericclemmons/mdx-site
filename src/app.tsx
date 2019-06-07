@@ -5,7 +5,6 @@ import path from "path";
 // @ts-ignore
 import serve from "serve-handler";
 
-import { Layout } from "../components/Layout";
 import { defaultContentDir } from "./utils/defaults";
 import getMDX from "./utils/getMDX";
 import renderMDX from "./utils/renderMDX";
@@ -31,10 +30,7 @@ export default router(
       return;
     }
 
-    return renderMDX(mdx, {
-      default: Layout,
-      ...props
-    });
+    return renderMDX(mdx, props);
   }),
 
   get("/*", async (req, res) => {

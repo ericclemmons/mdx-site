@@ -1,11 +1,15 @@
 // @ts-ignore
+import { MDXProvider } from "@mdx-js/react";
+// @ts-ignore
 import MDX from "@mdx-js/runtime";
 import escapeStringRegexp from "escape-string-regexp";
 import { minify } from "html-minifier";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { DefaultLayout, defaultTemplate, defaultTitle } from "./defaults";
+import { defaultTemplate, defaultTitle } from "./defaults";
+
+import * as components from "../../components";
 
 interface MDX {
   readonly attributes: any;
@@ -17,12 +21,16 @@ interface MDX {
 export default async function renderMDX(mdx: MDX, props: any) {
   const { attributes, body } = mdx;
   const { title } = attributes;
-  const { default: Layout = DefaultLayout, ...scope } = props;
+  const { default: Layout = components.Layout, ...scope } = props;
+
+  // TODO Dynamically `import` all components.
 
   const markup = renderToStaticMarkup(
-    <Layout>
-      <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
-    </Layout>
+    <MDXProvider components={components}>
+      <Layout>
+        <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
+      </Layout>
+    </MDXProvider>
   );
 
   const {

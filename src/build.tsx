@@ -8,7 +8,6 @@ import {
   defaultPublicDir
 } from "./utils/defaults";
 
-import { Layout } from "../components/Layout";
 import renderMDX from "./utils/renderMDX";
 import findAllPages from "./utils/findAllPages";
 import getMDX from "./utils/getMDX";
@@ -48,10 +47,7 @@ let spinner: Ora;
 
     const mdx = await getMDX(page);
     const props = await resolveProps(defaultContentDir, folder);
-    const output = await renderMDX(mdx, {
-      default: Layout,
-      ...props
-    });
+    const output = await renderMDX(mdx, props);
 
     await fse.mkdirp(path.dirname(target));
     await fse.writeFile(target, output, "utf8");
