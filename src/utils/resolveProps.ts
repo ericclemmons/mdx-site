@@ -22,7 +22,7 @@ export default async function resolveProps(contentDir: string, folder = "/") {
     return {};
   }
 
-  const { default: Layout, ...exported } = await import(propsFile);
+  const { default: PageLayout, ...exported } = await import(propsFile);
 
   const keys = Object.keys(exported);
   const values = await Promise.all(
@@ -53,8 +53,8 @@ export default async function resolveProps(contentDir: string, folder = "/") {
   }, {});
 
   // Combine layout with resolved props
-  if (Layout) {
-    props.default = Layout;
+  if (PageLayout) {
+    props.default = PageLayout;
   }
 
   return props;

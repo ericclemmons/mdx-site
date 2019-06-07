@@ -7,9 +7,14 @@ import { minify } from "html-minifier";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { defaultTemplate, defaultTitle } from "./defaults";
+import {
+  defaultComponentsDir,
+  DefaultLayout,
+  defaultTemplate,
+  defaultTitle
+} from "./defaults";
 
-import * as components from "../../components";
+import getComponents from "./getComponents";
 
 interface MDX {
   readonly attributes: any;
@@ -21,9 +26,12 @@ interface MDX {
 export default async function renderMDX(mdx: MDX, props: any) {
   const { attributes, body } = mdx;
   const { title } = attributes;
-  const { default: Layout = components.Layout, ...scope } = props;
+  const components = await getComponents(defaultComponentsDir);
 
-  // TODO Dynamically `import` all components.
+  // Prefer PageLayout => components.Layout => DefaultLayout
+  // @ts-ignore
+  const { Layout = DefaultLayout } = components;
+  const { default: PageLayout = Layout, ...scope } = props;
 
   const markup = renderToStaticMarkup(
     <MDXProvider components={components}>
