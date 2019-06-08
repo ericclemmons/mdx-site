@@ -8,7 +8,7 @@ import { defaultContentDir, templateContentDir } from "./defaults";
 
 export default async function getMDX(pagePath: string) {
   if (!(await fse.pathExists(defaultContentDir))) {
-    fse.copy(templateContentDir, defaultContentDir, {
+    await fse.copy(templateContentDir, defaultContentDir, {
       preserveTimestamps: true
     });
   }
