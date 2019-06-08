@@ -1,7 +1,6 @@
-// @ts-ignore
-import findAllPages from "../src/utils/findAllPages";
-import { defaultContentDir } from "../src/utils/defaults";
-import getMDX from "../src/utils/getMDX";
+import { defaults, findAllPages, getMDX } from "../../";
+
+const { defaultContentDir } = defaults;
 
 export const posts = async () => {
   const pages = (await findAllPages(defaultContentDir)).filter(page =>
