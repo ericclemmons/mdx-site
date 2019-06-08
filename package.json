@@ -1,6 +1,6 @@
 {
   "name": "mdx-site",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/index.js",
   "bin": "dist/bin/mdx-site.js",
   "files": [
