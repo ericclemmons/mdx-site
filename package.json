@@ -1,14 +1,15 @@
 {
-  "name": "typescript-mdx",
+  "name": "mdx-site",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": "dist/bin/mdx-site.js",
   "author": "Eric Clemmons <eric@smarterspam.com>",
   "license": "MIT",
   "scripts": {
-    "build": "node --require ts-node/register src/build",
-    "dev": "node --require ts-node/register src/server",
-    "now-build": "yarn build",
-    "deploy": "npx now"
+    "prebuild": "node -e \"require('fs-extra').emptyDir('dist')\"",
+    "build": "tsc",
+    "example": "cd example && yarn dev",
+    "postbuild": "chmod +x $npm_package_bin_mdx_site"
   },
   "devDependencies": {
     "@types/finalhandler": "^1.1.0",
