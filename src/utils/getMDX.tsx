@@ -4,9 +4,15 @@ import fm from "front-matter";
 import fse from "fs-extra";
 import React from "react";
 
-import { defaultContentDir } from "./defaults";
+import { defaultContentDir, templateContentDir } from "./defaults";
 
 export default async function getMDX(pagePath: string) {
+  if (!(await fse.pathExists(defaultContentDir))) {
+    fse.copy(templateContentDir, defaultContentDir, {
+      preserveTimestamps: true
+    });
+  }
+
   const raw = await fse.readFile(pagePath, "utf8");
   const { attributes, body } = fm(raw);
   const href = pagePath

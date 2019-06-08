@@ -11,6 +11,7 @@ interface Variables {
 const templatePath = path.join(defaultPublicDir, "index.html");
 
 export default async function renderTemplate(variables: Variables = {}) {
+  // TODO Do this once on server start, not every time.
   if (!(await fse.pathExists(templatePath))) {
     await fse.copy(templatePublicDir, defaultPublicDir, {
       overwrite: false,
