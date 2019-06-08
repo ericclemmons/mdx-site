@@ -9,6 +9,7 @@
     "prebuild": "node -e \"require('fs-extra').emptyDir('dist')\"",
     "build": "tsc",
     "example": "cd example && yarn dev",
+    "deploy": "npx np",
     "postbuild": "chmod +x $npm_package_bin_mdx_site"
   },
   "devDependencies": {
