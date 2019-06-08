@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "main": "dist/index.js",
   "bin": "dist/bin/mdx-site.js",
+  "files": [
+    "dist"
+  ],
   "author": "Eric Clemmons <eric@smarterspam.com>",
   "license": "MIT",
   "scripts": {
