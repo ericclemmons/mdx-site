@@ -12,6 +12,7 @@
     "prebuild": "node -e \"require('fs-extra').emptyDir('dist')\"",
     "build": "tsc",
     "example": "cd example && yarn dev",
+    "predeploy": "yarn build",
     "deploy": "np",
     "postbuild": "chmod +x $npm_package_bin_mdx_site"
   },
