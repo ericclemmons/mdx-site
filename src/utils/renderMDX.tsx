@@ -2,19 +2,14 @@
 import { MDXProvider } from "@mdx-js/react";
 // @ts-ignore
 import MDX from "@mdx-js/runtime";
-import escapeStringRegexp from "escape-string-regexp";
 import { minify } from "html-minifier";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import {
-  defaultComponentsDir,
-  DefaultLayout,
-  defaultTemplate,
-  defaultTitle
-} from "./defaults";
+import { defaultComponentsDir, DefaultLayout, defaultTitle } from "./defaults";
 
 import getComponents from "./getComponents";
+import renderTemplate from "./renderTemplate";
 
 interface MDX {
   readonly attributes: any;
@@ -49,16 +44,11 @@ export default async function renderMDX(mdx: MDX, props: any) {
       .concat("...")
   } = attributes;
 
-  const html = Object.entries({
+  const html = await renderTemplate({
     title: title || defaultTitle,
     description,
     markup
-  }).reduce((acc, [replacement, value]) => {
-    return acc.replace(
-      new RegExp(`%${escapeStringRegexp(replacement.toUpperCase())}%`, "g"),
-      value
-    );
-  }, defaultTemplate);
+  });
 
   if (process.env.NODE_ENV !== "production") {
     return html;

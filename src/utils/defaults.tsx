@@ -1,11 +1,12 @@
-import fs from "fs";
 import path from "path";
 import React from "react";
 
 export const DefaultLayout = (props: any) => <React.Fragment {...props} />;
-export const defaultComponentsDir = path.resolve("components");
-export const defaultContentDir = path.resolve("content");
-export const defaultOutputDir = path.resolve("dist");
-export const defaultPublicDir = path.resolve("public");
-export const defaultTemplate = fs.readFileSync("./public/index.html", "utf8");
+export const defaultComponentsDir = path.join(process.cwd(), "components");
+export const defaultContentDir = path.join(process.cwd(), "content");
+export const defaultOutputDir = path.join(process.cwd(), "dist");
+export const defaultPublicDir = path.join(process.cwd(), "public");
+export const templatePublicDir = path.resolve(__dirname, "../template/public");
+
+// TODO How to configure title? `react-helmet`?
 export const defaultTitle = "Eric Clemmons";
