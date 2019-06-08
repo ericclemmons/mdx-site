@@ -1,16 +1,18 @@
 import path from "path";
 import React from "react";
 
+const cwd = process.cwd();
+const root = path.resolve(__dirname, "../../");
+
 export const DefaultLayout = (props: any) => <React.Fragment {...props} />;
-export const defaultComponentsDir = path.join(process.cwd(), "components");
-export const defaultContentDir = path.join(process.cwd(), "content");
-export const defaultOutputDir = path.join(process.cwd(), "dist");
-export const defaultPublicDir = path.join(process.cwd(), "public");
-export const templateContentDir = path.resolve(
-  __dirname,
-  "../template/content"
-);
-export const templatePublicDir = path.resolve(__dirname, "../template/public");
+
+export const defaultComponentsDir = path.join(cwd, "components");
+export const defaultContentDir = path.join(cwd, "content");
+export const defaultOutputDir = path.join(cwd, "dist");
+export const defaultPublicDir = path.join(cwd, "public");
+
+export const templateContentDir = path.resolve(root, "template/content");
+export const templatePublicDir = path.resolve(root, "template/public");
 
 // TODO How to configure title? `react-helmet`?
 export const defaultTitle = "Eric Clemmons";
