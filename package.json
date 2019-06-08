@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/finalhandler": "^1.1.0",
+    "@types/fs-extra": "^7.0.0",
     "@types/html-minifier": "^3.5.3",
     "@types/micro": "^7.3.3",
     "@types/microrouter": "^3.1.0",
@@ -31,7 +32,6 @@
   },
   "dependencies": {
     "@mdx-js/runtime": "^1.0.20",
-    "@types/fs-extra": "^7.0.0",
     "escape-string-regexp": "^2.0.0",
     "front-matter": "^3.0.2",
     "fs-extra": "^8.0.1",
