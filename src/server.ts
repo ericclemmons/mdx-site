@@ -23,6 +23,7 @@ micro((req, res) => {
   return require("./app")
     .default(req, res)
     .catch((error: Error) => {
+      console.error(error);
       send(res, 500, error.message);
     });
 }).listen(3000, () => {
