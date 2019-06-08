@@ -4,20 +4,23 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = "development";
 }
 
-require("hot-module-replacement")({
-  ignore: /node_modules/
-});
+// HMR is only enabled when working with the library locally
+try {
+  require("hot-module-replacement")({
+    ignore: /node_modules/
+  });
+
+  if (module.hot) {
+    console.info("🔥  HMR Enabled");
+    module.hot.accept("./app", () => {
+      console.info("♻️  Reloaded");
+    });
+  } else {
+    console.info("💤  HMR Disabled");
+  }
+} catch (error) {}
 
 import micro, { send } from "micro";
-
-if (module.hot) {
-  console.info("🔥  HMR Enabled");
-  module.hot.accept("./app", () => {
-    console.info("♻️  Reloaded");
-  });
-} else {
-  console.info("💤  HMR Disabled");
-}
 
 micro((req, res) => {
   return require("./app")
