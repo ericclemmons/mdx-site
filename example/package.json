@@ -2,7 +2,8 @@
   "name": "ericclemmons.com",
   "scripts": {
     "build": "../dist/bin/mdx-site.js build",
-    "dev": "../dist/bin/mdx-site.js",
+    "dev": "node ../src/bin/mdx-site.tsx",
+    "start": "../dist/bin/mdx-site.js",
     "deploy": "npx now",
     "now-build": "yarn build"
   }
