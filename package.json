@@ -12,7 +12,7 @@
     "prebuild": "node -e \"require('fs-extra').emptyDir('dist')\"",
     "build": "tsc",
     "example": "cd example && yarn dev",
-    "deploy": "npx np",
+    "deploy": "np",
     "postbuild": "chmod +x $npm_package_bin_mdx_site"
   },
   "devDependencies": {
@@ -27,6 +27,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/webpack-env": "^1.13.9",
     "hot-module-replacement": "^3.0.3",
+    "np": "^5.0.3",
     "ts-node": "^8.2.0",
     "typescript": "^3.5.1"
   },
