@@ -30,9 +30,9 @@ export default async function renderMDX(mdx: MDX, props: any) {
 
   const markup = renderToStaticMarkup(
     <MDXProvider components={components}>
-      <Layout>
+      <PageLayout>
         <MDX scope={scope}>{title ? `# ${title}\n${body}` : body}</MDX>
-      </Layout>
+      </PageLayout>
     </MDXProvider>
   );
 
