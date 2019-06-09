@@ -4,13 +4,26 @@ import fm from "front-matter";
 import fse from "fs-extra";
 import React from "react";
 
-import { defaultContentDir, templateContentDir } from "./defaults";
+import {
+  defaultComponentsDir,
+  defaultContentDir,
+  templateComponentsDir,
+  templateContentDir
+} from "./defaults";
 
 export default async function getMDX(pagePath: string) {
+  // Copy /content, if missing
   if (!(await fse.pathExists(defaultContentDir))) {
     await fse.copy(templateContentDir, defaultContentDir, {
       preserveTimestamps: true
     });
+
+    // ...and copy /components, if missing
+    if (!(await fse.pathExists(defaultComponentsDir))) {
+      fse.copy(templateComponentsDir, defaultComponentsDir, {
+        preserveTimestamps: true
+      });
+    }
   }
 
   const raw = await fse.readFile(pagePath, "utf8");

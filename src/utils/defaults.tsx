@@ -12,6 +12,7 @@ export const defaultOutputDir = path.join(cwd, "dist");
 export const defaultPublicDir = path.join(cwd, "public");
 
 export const templateDir = path.resolve(root, "template");
+export const templateComponentsDir = path.resolve(templateDir, "components");
 export const templateContentDir = path.resolve(templateDir, "content");
 export const templatePublicDir = path.resolve(templateDir, "public");
 

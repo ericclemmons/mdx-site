@@ -1,22 +1,25 @@
 ---
-title: Hello, `mdx-site`
+# title: Welcome to your `mdx-site`
 description: My site.
 ---
 
-Here is an example of JSX embedded in Markdown:
+<div
+  className="bg-cover bg-gray-800 bg-center h-56 w-full"
+  style={{ backgroundImage }}
+/>
 
-<div style={{ padding: "20px", backgroundColor: "tomato" }}>
-  <h3>This is JSX</h3>
-</div>
+# Welcome to your `mdx-site`
 
 ## Getting Started
 
-1. Customize `/public/index.html` as you need.
-1. Add content to `/content/${folder}/index.mdx`
-1. For dynamic content, add `/content/${folder}/index.js`
+1. Add pages to `content/:page/index.mdx`
 
-### TypeScript Support
+1. `export` data via `content/:page/index.js`
 
-1. Add https://github.com/TypeStrong/ts-node as a dependency.
-1. Add `tsconfig.json`. (Run `tsc --init`)
-1. Rename `.js` to `.ts` (or `.tsx`) as needed.
+1. Customize HTML template: `public/index.html`
+
+1. Customize components: `components/:tag.tsx`
+
+1. 🚀 Publish to `dist`:
+
+   `yarn mdx-site build`
