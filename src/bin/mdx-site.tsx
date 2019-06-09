@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 
-const fse = require("fs-extra");
-const path = require("path");
+import fse from "fs-extra";
+import path from "path";
+
+import {
+  defaultComponentsDir,
+  defaultContentDir,
+  defaultPublicDir,
+  templateComponentsDir,
+  templateContentDir,
+  templatePublicDir
+} from "../utils/defaults";
 
 const tsconfigPath = path.join(process.cwd(), "tsconfig.json");
 
@@ -11,6 +20,28 @@ if (!fse.existsSync(tsconfigPath)) {
     path.resolve(__dirname, "../../template/tsconfig.json"),
     tsconfigPath
   );
+}
+
+// Copy /content, if missing
+if (!fse.existsSync(defaultContentDir)) {
+  fse.copySync(templateContentDir, defaultContentDir, {
+    preserveTimestamps: true
+  });
+
+  // ...and copy /components, if missing
+  if (!fse.existsSync(defaultComponentsDir)) {
+    fse.copySync(templateComponentsDir, defaultComponentsDir, {
+      preserveTimestamps: true
+    });
+  }
+}
+
+// Copy /public, if missing
+if (!fse.existsSync(defaultPublicDir)) {
+  fse.copySync(templatePublicDir, defaultPublicDir, {
+    overwrite: false,
+    preserveTimestamps: true
+  });
 }
 
 require("ts-node/register/type-check");
