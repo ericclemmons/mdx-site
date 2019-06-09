@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function wrapper(props: any) {
+export default function Layout(props: any) {
   const { children } = props;
 
   return (
