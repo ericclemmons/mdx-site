@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-try {
-  require("ts-node/register");
-  console.info("⚙️   ts-node registered");
-} catch (error) {}
+require("ts-node/register/type-check");
+console.info("⚙️   ts-node registered");
 
 const [, , command = "start"] = process.argv;
 
