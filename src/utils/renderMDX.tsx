@@ -37,7 +37,7 @@ export default async function renderMDX(mdx: MDX, props: any) {
   );
 
   const {
-    description = renderToStaticMarkup(<MDX>{body}</MDX>)
+    description = renderToStaticMarkup(<MDX scope={scope}>{body}</MDX>)
       .replace(/(<([^>]+)>)/gi, "")
       .replace(/\n/g, " ")
       .slice(0, 150)
