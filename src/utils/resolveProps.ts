@@ -9,11 +9,12 @@ interface Props {
 // Graceful resolve
 const resolve = (...segments: string[]) => {
   try {
-    const resolvePath = path.join(...segments);
+    const resolved = require.resolve(path.join(...segments));
 
     // Prevent saving copies between HMR or Node
-    delete require.cache[resolvePath];
-    return require.resolve(resolvePath);
+    delete require.cache[resolved];
+
+    return resolved;
   } catch (error) {
     return null;
   }
