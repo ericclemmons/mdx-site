@@ -11,8 +11,9 @@ export const defaultContentDir = path.join(cwd, "content");
 export const defaultOutputDir = path.join(cwd, "dist");
 export const defaultPublicDir = path.join(cwd, "public");
 
-export const templateContentDir = path.resolve(root, "template/content");
-export const templatePublicDir = path.resolve(root, "template/public");
+export const templateDir = path.resolve(root, "template");
+export const templateContentDir = path.resolve(templateDir, "content");
+export const templatePublicDir = path.resolve(templateDir, "public");
 
 // TODO How to configure title? `react-helmet`?
 export const defaultTitle = "Eric Clemmons";
