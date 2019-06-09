@@ -13,6 +13,12 @@ export default async function getComponents(componentsDir: string) {
 
   const componentEntries = await Promise.all(
     componentFiles.map(async file => {
+      if (module.hot) {
+        module.hot.accept(file, () => {
+          console.info("♻️  Reloaded", file.replace(process.cwd(), "."));
+        });
+      }
+
       const { name } = path.parse(file);
       const { default: component } = await import(file);
 

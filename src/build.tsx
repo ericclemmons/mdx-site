@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fse from "fs-extra";
 import ora, { Ora } from "ora";
 import path from "path";

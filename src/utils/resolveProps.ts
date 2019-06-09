@@ -9,7 +9,15 @@ interface Props {
 // Graceful resolve
 const resolve = (...segments: string[]) => {
   try {
-    return require.resolve(path.join(...segments));
+    const resolved = require.resolve(path.join(...segments));
+
+    if (module.hot) {
+      module.hot.accept(resolved, () => {
+        console.info("♻️  Reloaded", resolved.replace(process.cwd(), "."));
+      });
+    }
+
+    return resolved;
   } catch (error) {
     return null;
   }
