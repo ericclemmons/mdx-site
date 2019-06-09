@@ -12,7 +12,7 @@ require("hot-module-replacement")({
 if (module.hot) {
   console.info("🔥  HMR Enabled");
   module.hot.accept("./app", () => {
-    console.info("♻️  Reloaded");
+    console.info("♻️  Reloaded mdx-site");
   });
 } else {
   console.info("💤  HMR Disabled");

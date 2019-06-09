@@ -11,8 +11,11 @@ const resolve = (...segments: string[]) => {
   try {
     const resolved = require.resolve(path.join(...segments));
 
-    // Prevent saving copies between HMR or Node
-    delete require.cache[resolved];
+    if (module.hot) {
+      module.hot.accept(resolved, () => {
+        console.info("♻️  Reloaded", resolved.replace(process.cwd(), "."));
+      });
+    }
 
     return resolved;
   } catch (error) {
