@@ -19,14 +19,23 @@ If you're starting from scratch:
 1. `mkdir my-site`
 1. `cd my-site`
 
+![Picture of previous steps](step-1.png)
+
 Within your project, install `mdx-site`:
 
-1. `yarn add mdx-site`
+- `yarn add mdx-site`
+
+![Picture of previous step](step-2.png)
 
 Now you're ready to run it:
 
-1. `yarn mdx-site`
-1. Visit <http://localhost:3000/>.
+- `yarn mdx-site`
+
+![Picture of previous step](step-3.png)
+
+- Visit <http://localhost:3000/>.
+
+> ![Picture of previous step](step-4.png)
 
 ## Authoring
 
