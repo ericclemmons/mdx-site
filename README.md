@@ -3,14 +3,14 @@
   <sup>&nbsp;S I T E</sup>
 </h1>
 
-> Static site generator powered by:
->
-> - `ʦ` [TypeScript][ts]
-> - `↓` [MDX][mdx]
-> - `⚛`️ [React][react]
-> - `♻` [hot-module-replacement][hmr]
->
-> ![lighthouse score](lighthouse.png)
+Static site generator powered by:
+
+- `ʦ` [TypeScript][ts]
+- `↓` [MDX][mdx]
+- `⚛`️ [React][react]
+- `♻` [hot-module-replacement][hmr]
+
+![lighthouse score](lighthouse.png)
 
 ## Getting Started
 
