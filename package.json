@@ -12,12 +12,9 @@
   "scripts": {
     "prebuild": "node -e \"require('fs-extra').emptyDir('dist')\"",
     "build": "tsc",
-    "dev": "cd example && yarn dev",
     "prerelease": "yarn build",
     "release": "np",
-    "postbuild": "chmod +x $npm_package_bin_mdx_site",
-    "prestart": "yarn build",
-    "start": "cd example && yarn start"
+    "postbuild": "chmod +x $npm_package_bin_mdx_site"
   },
   "devDependencies": {
     "@types/finalhandler": "^1.1.0",
