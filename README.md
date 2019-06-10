@@ -1,6 +1,6 @@
 <h1 align="center">
-  <img alt="mdx" height="44" valign="top" src="https://raw.githubusercontent.com/mdx-js/design/master/assets/logo.svg?sanitize=true" />
-  &nbsp;S&nbsp;I&nbsp;T&nbsp;E
+  <img alt="mdx" height="40" src="https://raw.githubusercontent.com/mdx-js/design/master/assets/logo.svg?sanitize=true" />
+  <sup>&nbsp;S I T E</sup>
 </h1>
 
 > Static site generator powered by:
