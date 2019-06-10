@@ -1,4 +1,7 @@
-<h1 align="center">mdx-site</h1>
+<h1 align="center">
+  <img alt="mdx" height="44" valign="top" src="https://raw.githubusercontent.com/mdx-js/design/master/assets/logo.svg?sanitize=true" />
+  &nbsp;S&nbsp;I&nbsp;T&nbsp;E
+</h1>
 
 > Static site generator powered by:
 >
