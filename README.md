@@ -18,7 +18,7 @@ If you're starting from scratch:
 
 Within your project, install `mdx-site`:
 
-1. `yarn add mdx-site
+1. `yarn add mdx-site`
 
 Now you're ready to run it:
 
