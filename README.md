@@ -1,53 +1,58 @@
-# [Eric Clemmons' Website][site]
+<h1 align="center">mdx-site</h1>
 
-> Static markdown blog powered by:
+> Static site generator powered by:
 >
 > - `ʦ` [TypeScript][ts]
 > - `↓` [MDX][mdx]
 > - `⚛`️ [React][react]
-> - `♒︎` [TailwindCSS][tailwind]
 > - `♻` [hot-module-replacement][hmr]
-> - `▲` [Now][now]
 >
 > ![lighthouse score](lighthouse.png)
 
 ## Getting Started
 
-After cloning normally:
+If you're starting from scratch:
 
-1. `yarn install`
-1. `yarn dev`
+1. `mkdir my-site`
+1. `cd my-site`
+
+Within your project, install `mdx-site`:
+
+1. `yarn add mdx-site
+
+Now you're ready to run it:
+
+1. `yarn mdx-site`
 1. Visit <http://localhost:3000/>.
 
 ## Authoring
 
-The authoring experience is pretty simple!
+1. Add pages to `content/:page/index.mdx`
 
-1. Manage content in `/content/:url/index.mdx`.
+1. `export` data via `content/:page/index.tsx`
 
-   _I've been using https://medium-to-markdown.now.sh/ to convert my Medium posts over._
+1. Customize HTML template: `public/index.html`
 
-   1. Add an `./index.tsx` file to **asynchronously prefetch data**.
+1. Customize components: `components/:tag.tsx`
 
-1. Customize `/components` as needed, primarily through `Layout.tsx`.
+1. 🚀 Publish to `dist`:
 
-1. Add assets in `/public` to serve statically.
+   `yarn mdx-site build`
 
-   1. Customize `/public/index.html` as needed.
-
-1. **All changes are [hot-reloaded][hmr]**. Refresh for changes!
+**All changes are [hot-reloaded][hmr]**. Refresh for changes!
 
 ## Deployment
 
-The site is statically rendered and can be deployed via [Now][now].
+1. `yarn mdx-site build`
+1. Publish `dist` as a static site using Netlify, Now, or whatever you'd like.
 
-1. `yarn build`
-1. `yarn deploy`
+## Author
+
+- [Eric Clemmons](ericclemmons.com)
 
 [hmr]: https://github.com/sidorares/hot-module-replacement
 [mdx]: https://mdxjs.com/
 [now]: https://zeit.co/now
 [react]: https://reactjs.org/
 [site]: https://ericclemmons.com/
-[tailwind]: https://tailwindcss.com/
 [ts]: https://www.typescriptlang.org/
