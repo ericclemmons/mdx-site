@@ -35,7 +35,7 @@ Now you're ready to run it:
 
 - Visit <http://localhost:3000/>.
 
-> ![Picture of previous step](step-4.png)
+![Picture of previous step](welcome.png)
 
 ## Authoring
 
