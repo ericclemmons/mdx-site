@@ -44,7 +44,10 @@ if (!fse.existsSync(defaultPublicDir)) {
   });
 }
 
-require("ts-node/register/type-check");
+if (!require.extensions[".ts"]) {
+  require("ts-node/register/type-check");
+}
+
 console.info("⚙️   ts-node registered");
 
 const [, , command = "start"] = process.argv;
