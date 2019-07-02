@@ -6,6 +6,7 @@ import path from "path";
 import {
   defaultComponentsDir,
   defaultContentDir,
+  defaultOutputDir,
   defaultPublicDir,
   templateComponentsDir,
   templateContentDir,
@@ -42,6 +43,11 @@ if (!fse.existsSync(defaultPublicDir)) {
     overwrite: false,
     preserveTimestamps: true
   });
+}
+
+// Remove /dist, if existing
+if (fse.existsSync(defaultOutputDir)) {
+  fse.emptyDirSync(defaultOutputDir);
 }
 
 if (!require.extensions[".ts"]) {
