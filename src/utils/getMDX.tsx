@@ -5,9 +5,14 @@ import fse from "fs-extra";
 import React from "react";
 
 import { defaultContentDir } from "./defaults";
+import resolvePageProps from "./resolvePageProps";
 
 export default async function getMDX(pagePath: string) {
-  const raw = await fse.readFile(pagePath, "utf8");
+  const [raw, props] = await Promise.all([
+    fse.readFile(pagePath, "utf8"),
+    resolvePageProps(pagePath)
+  ]);
+
   const { attributes, body } = fm(raw);
   const href = pagePath
     .replace(defaultContentDir, "")
@@ -22,5 +27,5 @@ export default async function getMDX(pagePath: string) {
   const Body = () => <MDX>{body}</MDX>;
   const Snippet = () => <MDX>{snippet}</MDX>;
 
-  return { attributes, body, Body, href, raw, snippet, Snippet };
+  return { attributes, body, Body, href, props, raw, snippet, Snippet };
 }

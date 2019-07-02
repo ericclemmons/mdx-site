@@ -20,10 +20,7 @@ export default router(
     }
 
     const { folder } = req.params;
-    const [mdx, props] = await Promise.all([
-      getMDX(path.join(defaultContentDir, folder, "index.mdx")),
-      resolveProps(defaultContentDir, folder)
-    ]);
+    const mdx = await getMDX(path.join(defaultContentDir, folder, "index.mdx"));
 
     // Ignore folders without markup
     if (!mdx) {

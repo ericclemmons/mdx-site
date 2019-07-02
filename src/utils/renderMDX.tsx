@@ -10,16 +10,18 @@ import { defaultComponentsDir, DefaultLayout, defaultTitle } from "./defaults";
 
 import getComponents from "./getComponents";
 import renderTemplate from "./renderTemplate";
+import { Props } from "./resolvePageProps";
 
 interface MDX {
   readonly attributes: any;
   readonly body: string;
   readonly frontmatter?: string;
+  readonly props: Props;
   readonly raw: string;
 }
 
-export default async function renderMDX(mdx: MDX, props: any) {
-  const { attributes, body } = mdx;
+export default async function renderMDX(mdx: MDX) {
+  const { attributes, body, props } = mdx;
   const { title } = attributes;
   const components = await getComponents(defaultComponentsDir);
 

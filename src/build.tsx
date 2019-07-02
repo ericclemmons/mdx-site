@@ -13,7 +13,6 @@ import {
 import renderMDX from "./utils/renderMDX";
 import findAllPages from "./utils/findAllPages";
 import getMDX from "./utils/getMDX";
-import resolveProps from "./utils/resolveProps";
 
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = "production";
@@ -52,8 +51,7 @@ let spinner: Ora;
     spinner = ora().start(`Building ${folder || "/"}`);
 
     const mdx = await getMDX(page);
-    const props = await resolveProps(defaultContentDir, folder);
-    const output = await renderMDX(mdx, props);
+    const output = await renderMDX(mdx);
 
     await fse.mkdirp(path.dirname(target));
     await fse.writeFile(target, output, "utf8");

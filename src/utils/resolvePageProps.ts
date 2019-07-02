@@ -1,7 +1,7 @@
 import path from "path";
 import { ReactElement } from "react";
 
-interface Props {
+export interface Props {
   default?: ReactElement;
   [key: string]: any;
 }
@@ -23,8 +23,8 @@ const resolve = (...segments: string[]) => {
   }
 };
 
-export default async function resolveProps(contentDir: string, folder = "/") {
-  const propsFile = resolve(contentDir, folder);
+export default async function resolvePageProps(pagePath: string) {
+  const propsFile = resolve(path.dirname(pagePath));
 
   if (!propsFile) {
     return {};
