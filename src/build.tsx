@@ -10,9 +10,9 @@ import {
   defaultPublicDir
 } from "./utils/defaults";
 
-import renderMDX from "./utils/renderMDX";
+import renderPage from "./utils/renderPage";
 import findAllPages from "./utils/findAllPages";
-import getMDX from "./utils/getMDX";
+import getPage from "./utils/getPage";
 
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = "production";
@@ -42,16 +42,16 @@ let spinner: Ora;
   spinner.info(`Found ${pages.length} pages`);
 
   // Build each page into /dist
-  for (const page of pages) {
-    const folder = page
+  for (const pagePath of pages) {
+    const folder = pagePath
       .replace(defaultContentDir, "")
       .replace("/index.mdx", "");
 
     const target = path.join(defaultOutputDir, folder, "index.html");
     spinner = ora().start(`Building ${folder || "/"}`);
 
-    const mdx = await getMDX(page);
-    const output = await renderMDX(mdx);
+    const page = await getPage(pagePath);
+    const output = await renderPage(page);
 
     await fse.mkdirp(path.dirname(target));
     await fse.writeFile(target, output, "utf8");

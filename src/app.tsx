@@ -6,9 +6,8 @@ import path from "path";
 import serve from "serve-handler";
 
 import { defaultContentDir } from "./utils/defaults";
-import getMDX from "./utils/getMDX";
-import renderMDX from "./utils/renderMDX";
-import resolveProps from "./utils/resolveProps";
+import getPage from "./utils/getPage";
+import renderPage from "./utils/renderPage";
 
 export default router(
   get("(:folder)", async req => {
@@ -20,14 +19,16 @@ export default router(
     }
 
     const { folder } = req.params;
-    const mdx = await getMDX(path.join(defaultContentDir, folder, "index.mdx"));
+    const page = await getPage(
+      path.join(defaultContentDir, folder, "index.mdx")
+    );
 
     // Ignore folders without markup
-    if (!mdx) {
+    if (!page) {
       return;
     }
 
-    return renderMDX(mdx, props);
+    return renderPage(page);
   }),
 
   get("/*", async (req, res) => {

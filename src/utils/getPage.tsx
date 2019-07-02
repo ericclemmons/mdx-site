@@ -7,7 +7,7 @@ import React from "react";
 import { defaultContentDir } from "./defaults";
 import resolvePageProps from "./resolvePageProps";
 
-export default async function getMDX(pagePath: string) {
+export default async function getPage(pagePath: string) {
   const [raw, props] = await Promise.all([
     fse.readFile(pagePath, "utf8"),
     resolvePageProps(pagePath)
