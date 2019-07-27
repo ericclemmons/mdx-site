@@ -18,6 +18,7 @@ If you're starting from scratch:
 
 1. `mkdir my-site`
 1. `cd my-site`
+1. `yarn init -y`
 
 ![Picture of previous steps](step-1.png)
 
