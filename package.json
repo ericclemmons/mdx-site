@@ -1,6 +1,6 @@
 {
   "name": "mdx-site",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": "git@github.com:ericclemmons/mdx-site.git",
   "main": "dist/index.js",
   "bin": "dist/bin/mdx-site.js",
